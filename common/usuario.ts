@@ -5,6 +5,13 @@ export class Usuario{
 	private email : string;
     private senha : string;
 
+	constructor(cpf: string, nome: string, email: string, senha: string) {
+		this.nome = nome;
+		this.cpf = cpf;
+		this.email = email;
+		this.senha = senha;
+	}
+
 	get Nome(): string{
 		return this.nome;
 	}

@@ -19,11 +19,12 @@ function calculaMascara(cpf: string) {
 export class Aluno extends Usuario{
     private mascara: string;
 
-    get Mascara(): string{
-		return this.mascara;
-	}
+    constructor(cpf: string, nome: string, email: string, senha: string) {
+      super(cpf, nome, email, senha);
+      this.mascara = calculaMascara(this.Cpf);
+    }
 
-	set Mascara(){
-        this.mascara = calculaMascara(this.Cpf);
-	}
+    get Mascara(): string{
+      return this.mascara;
+    }
 }
