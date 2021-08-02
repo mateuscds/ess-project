@@ -3,19 +3,20 @@
     <div class="cadastroInputs">
         <div class="cpfBlock">
             <label>CPF: </label>
-            <input type="text" />
+            <input #cpf_box type="text"/>
         </div>
         <div class="nomeBlock">
             <label>Nome: </label>
-            <input type="text" />
+            <input #nome_box type="text"/>
         </div>
         <div class="emailBlock">
             <label>E-mail: </label>
-            <input type="text" />
+            <input #email_box type="text"/>
         </div>
         <div class="senhaBlock">
             <label>Senha: </label>
-            <input type="text" />
+            <input #senha_box type="text"/>
         </div>
     </div>
+    <button (click)="cadastrarUsuario(cpf_box.value, nome_box.value, email_box.value, senha_box.value)"> Cadastrar </button>
 </section>

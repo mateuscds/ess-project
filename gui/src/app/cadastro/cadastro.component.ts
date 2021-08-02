@@ -8,7 +8,6 @@ import { CadastroService } from './cadastro.service';
     styleUrls: ['./cadastro.component.css']
   })
 
-
 export class CadastroComponent {
     usuarios: Usuario[] = [];
 
@@ -30,5 +29,10 @@ export class CadastroComponent {
                 }
             },
         );
+        console.log("Novo usuario:");
+        console.log("CPF: ", cpf);
+        console.log("Nome: ", nome);
+        console.log("Email: ", email);
+        console.log("Senha: ", senha);
     }
 }

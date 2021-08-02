@@ -16,9 +16,6 @@ import { CadastroService } from './cadastro/cadastro.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot([
-      {path: '', component: CadastroComponent},
-    ])
   ],
   providers: [CadastroService],
   bootstrap: [AppComponent]
