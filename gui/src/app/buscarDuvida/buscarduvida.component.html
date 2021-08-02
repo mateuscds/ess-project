@@ -1,0 +1,14 @@
+<html>
+    <table>
+    <tr>
+        <td><input type="text" name="nomeduvida" value="" placeholder="Insira a dúvida a ser buscada"/></td>
+        <td><input type="checkbox" checked>Concluídas</td>
+        <td><input type="checkbox" checked>Não Concluídas</td>
+        <td><button>Buscar</button></td>
+    </tr>
+    <tr *ngFor="let d of filtroDuvidas" name="linhaduvida">
+        <td><a href="" name="linhanomeduvida">{{d}}</a></td>        
+    </tr>
+    </table>
+
+</html>
