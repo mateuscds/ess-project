@@ -14,9 +14,16 @@ export class CadastroService {
 
     constructor(private http: HttpClient) { }
 
-    cadastrar(cpf: string, nome: string, email: string, senha: string): Observable<String> {
-        var usuario = new Usuario(cpf, nome, email, senha);
-
+    cadastrar(cpf: string, nome: string, email: string, senha: string, eh_aluno: boolean): Observable<String> {
+       
+        let usuario;
+        if(eh_aluno){
+            usuario = new Aluno(cpf, nome, email, senha);
+        }
+        else{
+            usuario = new Professor(cpf, nome, email, senha);
+        }
+    
         return this.http.post<any>(this.URL + '/usuarios/cadastrar', usuario).pipe(
             retry(2),
             map(res => {

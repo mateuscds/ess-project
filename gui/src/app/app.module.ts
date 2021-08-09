@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { CadastroService } from './cadastro/cadastro.service';
@@ -16,6 +17,7 @@ import { CadastroService } from './cadastro/cadastro.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [CadastroService],
   bootstrap: [AppComponent]

@@ -2,9 +2,9 @@
   "name": "node-with-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/server/server.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "tsc && node dist/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

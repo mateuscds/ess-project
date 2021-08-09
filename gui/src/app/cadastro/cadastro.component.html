@@ -17,6 +17,16 @@
             <label>Senha: </label>
             <input #senha_box type="text"/>
         </div>
+        <div class="tipoCadastro">
+            <form action="/action_page.php">
+                <input #botao_professor_monitor type="radio" id="prof_monitor" name="tipo_cadastro" value="Professor/Monitor" checked>
+                <label>Professor/Monitor</label>
+
+                <input #botao_aluno type="radio" id="aluno" name="tipo_cadastro" value="Aluno">
+                <label>Aluno</label>
+            </form>
+        </div>
+        
     </div>
-    <button (click)="cadastrarUsuario(cpf_box.value, nome_box.value, email_box.value, senha_box.value)"> Cadastrar </button>
+    <button (click)="cadastrarUsuario(cpf_box.value, nome_box.value, email_box.value, senha_box.value, botao_professor_monitor.checked, botao_aluno.checked)"> Cadastrar </button>
 </section>
