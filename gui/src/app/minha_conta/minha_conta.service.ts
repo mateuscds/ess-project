@@ -33,6 +33,30 @@ export class MinhaContaService {
             retry(2)
         );
     }
-    
 
+    desloga(): Observable<String>{
+        return this.http.post<any>(this.URL + '/desloga', '').pipe(
+            retry(2),
+            map(res => {
+                if (res.success) {
+                    return res.success;
+                } else {
+                    return res.failure;
+                }
+            })
+        );
+    }
+
+    deleta(): Observable<String>{
+        return this.http.post<any>(this.URL + '/deleta', '').pipe(
+            retry(2),
+            map(res => {
+                if (res.success) {
+                    return res.success;
+                } else {
+                    return res.failure;
+                }
+            })
+        );
+    }
 }

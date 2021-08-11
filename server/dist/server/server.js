@@ -98,60 +98,90 @@ servidor.post('/login', (req, res) => {
     console.log(usuario_sessao);
 });
 servidor.post('/atualiza_cadastro', (req, res) => {
-    let cpf = req.body.cpf;
-    let nome = req.body.nome;
-    let email = req.body.email;
-    let senha = req.body.senha;
-    let usuario_modificado;
-    if (usuario_sessao.hasOwnProperty('mascara')) {
-        usuario_modificado = new aluno_1.Aluno(cpf, nome, email, senha);
-    }
-    else {
-        usuario_modificado = new professor_1.Professor(cpf, nome, email, senha);
-    }
-    let nulo = false;
-    if (cpf === '' || nome === '' || email === '' || senha === '') {
-        nulo = true;
-    }
-    if (nulo) {
-        res.send({
-            failure: 'Alguma das entradas esta nula!',
-        });
-    }
-    else {
-        let index = 0;
-        for (let i of usuarios) {
-            if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
-                break;
-            }
-            index += 1;
+    if (usuario_sessao != null) {
+        let cpf = req.body.cpf;
+        let nome = req.body.nome;
+        let email = req.body.email;
+        let senha = req.body.senha;
+        let usuario_modificado;
+        if (usuario_sessao.hasOwnProperty('mascara')) {
+            usuario_modificado = new aluno_1.Aluno(cpf, nome, email, senha);
         }
-        let existe = false;
-        let index_aux = 0;
-        for (let i of usuarios) {
-            if ((i.Cpf == usuario_modificado.Cpf || i.Email == usuario_modificado.Email) && index_aux != index) {
-                existe = true;
-            }
-            index_aux += 1;
+        else {
+            usuario_modificado = new professor_1.Professor(cpf, nome, email, senha);
         }
-        if (existe) {
+        let nulo = false;
+        if (cpf === '' || nome === '' || email === '' || senha === '') {
+            nulo = true;
+        }
+        if (nulo) {
             res.send({
-                failure: 'Um outro usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
+                failure: 'Alguma das entradas esta nula!',
             });
         }
         else {
-            usuarios[index] = usuario_modificado;
-            usuario_sessao = usuario_modificado;
-            res.send({
-                success: 'Atualizacao realizada com sucesso!',
-            });
+            let index = 0;
+            for (let i of usuarios) {
+                if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
+                    break;
+                }
+                index += 1;
+            }
+            let existe = false;
+            let index_aux = 0;
+            for (let i of usuarios) {
+                if ((i.Cpf == usuario_modificado.Cpf || i.Email == usuario_modificado.Email) && index_aux != index) {
+                    existe = true;
+                }
+                index_aux += 1;
+            }
+            if (existe) {
+                res.send({
+                    failure: 'Um outro usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
+                });
+            }
+            else {
+                usuarios[index] = usuario_modificado;
+                usuario_sessao = usuario_modificado;
+                res.send({
+                    success: 'Atualizacao realizada com sucesso!',
+                });
+            }
+            console.log(usuarios);
+            console.log(usuario_sessao);
         }
-        console.log(usuarios);
+    }
+    else {
+        res.send({
+            failure: 'Voce nao esta logado no sistema para atualizar seus dados!',
+        });
     }
 });
 servidor.get('/meu_usuario', (req, res) => {
     res.send((usuario_sessao));
-    console.log("No servidor:", usuario_sessao);
+});
+servidor.post('/desloga', (req, res) => {
+    usuario_sessao = null;
+    res.send({
+        success: 'Usuario deslogado do sistema com sucesso!',
+    });
+    console.log(usuario_sessao);
+});
+servidor.post('/deleta', (req, res) => {
+    let usuario_atual;
+    for (let i of usuarios) {
+        if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
+            usuario_atual = i;
+            break;
+        }
+    }
+    usuarios = usuarios.filter(obj => obj !== usuario_atual);
+    usuario_sessao = null;
+    res.send({
+        success: 'Usuario deletado do sistema com sucesso!',
+    });
+    console.log(usuarios);
+    console.log(usuario_sessao);
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');
