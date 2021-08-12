@@ -13,6 +13,7 @@ import { LoginService } from './login/login.service';
 import { MinhaContaComponent } from './minha_conta/minha_conta.component';
 import { MinhaContaService } from './minha_conta/minha_conta.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { DuvidaComponent } from './duvida/duvida.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     CadastroComponent,
     LoginComponent,
     MinhaContaComponent,
+    DuvidaComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,12 @@ import { NavbarComponent } from './navbar/navbar.component';
       {
         path: 'minha_conta',
         component: MinhaContaComponent
+      },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'duvida',
+        component: DuvidaComponent
       },
     ])
   ],
