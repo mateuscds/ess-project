@@ -24,6 +24,7 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
 
 import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
 import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
+import { Buscarduvida } from './buscarDuvida/buscarduvida.component'
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
     CriarTurmaComponent,
     MinhasTurmasComponent,
     GerenciamentoTurmaComponent,
+    Buscarduvida
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,12 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
       {
         path: 'gerenciamento_turma',
         component: GerenciamentoTurmaComponent
+      },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'buscar_duvida',
+        component: Buscarduvida
       },
     ])
   ],
