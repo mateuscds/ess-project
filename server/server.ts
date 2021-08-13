@@ -281,6 +281,11 @@ servidor.post('/criar_turma', (req: express.Request, res: express.Response) => {
 })
 
 
+servidor.get('/minhas_turmas', (req: express.Request, res: express.Response) => {
+    res.send((turmas));
+})
+
+
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!')
  })

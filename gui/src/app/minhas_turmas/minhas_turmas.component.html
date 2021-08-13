@@ -1,0 +1,10 @@
+<section class="turmaView">
+    <h1 class="turmaTitle">MINHAS TURMAS</h1>
+    
+    <h2 *ngIf='turmas.length === 0'>Nenhuma turma cadastrada no momento.</h2>
+    <div *ngFor="let t of turmas; let i = index" class="turmaContainer">
+        <div class="LinhaPrincipal">
+            <label>{{t.Nome}}</label>
+        </div>
+    </div>
+</section>
