@@ -4,6 +4,7 @@ exports.closeServer = exports.servidor = void 0;
 const express = require("express");
 const aluno_1 = require("../common/aluno");
 const professor_1 = require("../common/professor");
+const turma_1 = require("../common/turma");
 var servidor = express();
 exports.servidor = servidor;
 var allowCrossDomain = function (req, res, next) {
@@ -16,6 +17,7 @@ servidor.use(allowCrossDomain);
 servidor.use(express.json());
 servidor.use(express.urlencoded({ extended: true }));
 let usuarios = [];
+let turmas = [];
 let usuario_sessao = null;
 servidor.post('/usuarios/cadastrar', (req, res) => {
     let cpf = req.body.cpf;
@@ -182,6 +184,56 @@ servidor.post('/deleta', (req, res) => {
     });
     console.log(usuarios);
     console.log(usuario_sessao);
+});
+servidor.post('/criar_turma', (req, res) => {
+    let nome = req.body.nome;
+    let codigo = req.body.codigo;
+    let semestre = req.body.semestre;
+    if (usuario_sessao == null) {
+        res.send({
+            failure: 'Você não está logado como professor no sistema!',
+        });
+    }
+    else {
+        if (usuario_sessao.hasOwnProperty('mascara')) {
+            res.send({
+                failure: 'Apenas professores podem realizar a criação de turmas!',
+            });
+        }
+        else {
+            let nulo = false;
+            if (nome === '' || codigo === '' || semestre === '') {
+                nulo = true;
+            }
+            if (nulo) {
+                res.send({
+                    failure: 'Nome, codigo ou semestre nulos!',
+                });
+            }
+            else {
+                let existe = false;
+                for (let i of turmas) {
+                    if (i.Codigo == codigo) {
+                        existe = true;
+                    }
+                }
+                if (existe) {
+                    res.send({
+                        failure: 'Já existe uma turma cadastrada com esse código!',
+                    });
+                }
+                else {
+                    let nova_turma = new turma_1.Turma(nome, codigo, semestre, usuario_sessao);
+                    turmas.push(nova_turma);
+                    console.log(usuarios);
+                    res.send({
+                        success: 'Turma cadastrada com sucesso!',
+                    });
+                }
+            }
+        }
+        console.log(turmas);
+    }
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');
