@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
@@ -25,7 +25,7 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
 import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
 import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
 import { Buscarduvida } from './buscarDuvida/buscarduvida.component'
-
+import { BuscarDuvidaService } from './buscarDuvida/buscarduvida.service'
 
 @NgModule({
   declarations: [
@@ -86,7 +86,7 @@ import { Buscarduvida } from './buscarDuvida/buscarduvida.component'
       },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService],
+  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, BuscarDuvidaService, MinhasTurmasService, GerenciamentoTurmaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
