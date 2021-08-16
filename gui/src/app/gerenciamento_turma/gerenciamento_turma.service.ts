@@ -50,4 +50,20 @@ export class GerenciamentoTurmaService {
             })
         );
     }
+
+    convidar(email: string): Observable<String>{
+
+        let info = {"email": email};
+
+        return this.http.post<any>(this.URL + '/convidar_aluno', info).pipe(
+            retry(2),
+            map(res => {
+                if (res.success) {
+                    return res.success;
+                } else {
+                    return res.failure;
+                }
+            })
+        );
+    }
 }

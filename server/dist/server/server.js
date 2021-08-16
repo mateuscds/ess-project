@@ -238,12 +238,26 @@ servidor.post('/criar_turma', (req, res) => {
 });
 servidor.get('/minhas_turmas', (req, res) => {
     let turmas_aux = [];
-    for (let i of turmas) {
-        if (usuario_sessao.Cpf == i.Professor_responsavel.Cpf) {
-            turmas_aux.push(i);
+    let status_list = [];
+    if (usuario_sessao.hasOwnProperty('mascara')) {
+        for (let i of turmas) {
+            let student_list = i.Lista_de_alunos;
+            for (let j of student_list) {
+                if (j[0].Cpf == usuario_sessao.Cpf) {
+                    turmas_aux.push(i);
+                    status_list.push(j[1]);
+                }
+            }
         }
     }
-    res.send((turmas_aux));
+    else {
+        for (let i of turmas) {
+            if (usuario_sessao.Cpf == i.Professor_responsavel.Cpf) {
+                turmas_aux.push(i);
+            }
+        }
+    }
+    res.send([turmas_aux, status_list]);
 });
 servidor.get('/minha_turma', (req, res) => {
     res.send((turma_sessao));
@@ -326,6 +340,107 @@ servidor.post('/deleta_turma', (req, res) => {
     });
     console.log(turmas);
     console.log(turma_sessao);
+});
+servidor.post('/convidar_aluno', (req, res) => {
+    let email = req.body.email;
+    if (email == '') {
+        res.send({
+            failure: 'O email do convite não pode ser vazio!',
+        });
+    }
+    else {
+        let usuario_convidado = null;
+        for (let i of usuarios) {
+            if (i.Email == email) {
+                usuario_convidado = i;
+                break;
+            }
+        }
+        if (usuario_convidado == null) {
+            res.send({
+                failure: 'O usuario convidado não existe no sistema!',
+            });
+        }
+        else {
+            let index = 0;
+            for (let i of turmas) {
+                if (i.Codigo == turma_sessao.Codigo) {
+                    break;
+                }
+                index += 1;
+            }
+            let list_convidados = turmas[index].Lista_de_alunos;
+            let exists = false;
+            for (let i of list_convidados) {
+                if (i[0].Email == email) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) {
+                res.send({
+                    failure: 'O usuario já foi convidado!',
+                });
+            }
+            else {
+                turmas[index].Adicionar_convite(usuario_convidado, "Pendente");
+                turma_sessao = turmas[index];
+                res.send({
+                    success: 'Usuario convidado com sucesso!',
+                });
+            }
+        }
+    }
+    for (let turma of turmas) {
+        console.log(turma);
+        console.log(turma.Lista_de_alunos);
+    }
+});
+servidor.post('/atualiza_convite', (req, res) => {
+    let codigo = req.body.codigo;
+    let flag = req.body.flag; //boolean
+    let index_turmas = 0;
+    let index_aluno = 0;
+    for (let turma of turmas) {
+        if (codigo == turma.Codigo) {
+            for (let aluno of turma.Lista_de_alunos) {
+                if (aluno[0].Cpf == usuario_sessao.Cpf) {
+                    break;
+                }
+                index_aluno += 1;
+            }
+            break;
+        }
+        index_turmas += 1;
+    }
+    if (index_turmas == null || index_aluno == null) {
+        res.send({
+            failure: 'Usuário não encontrado!',
+        });
+    }
+    else {
+        if (flag) {
+            turmas[index_turmas].Lista_de_alunos[index_aluno][1] = "Aceito";
+            res.send({
+                success: 'Convite aceito com sucesso!',
+            });
+        }
+        else {
+            let lista_alunos_aux = [];
+            for (let aluno of turmas[index_turmas].Lista_de_alunos) {
+                if (aluno[0].Cpf != usuario_sessao.Cpf) {
+                    lista_alunos_aux.push(aluno);
+                }
+            }
+            turmas[index_turmas].Lista_de_alunos = lista_alunos_aux;
+            //turmas[index_turmas].Lista_de_alunos = turmas[index_turmas].Lista_de_alunos.filter(obj => obj !== [usuario_sessao, "Pendente"]);
+            res.send({
+                success: 'Convite rejeitado com sucesso!',
+            });
+        }
+    }
+    console.log(turmas);
+    console.log(turmas[index_turmas].Lista_de_alunos);
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');

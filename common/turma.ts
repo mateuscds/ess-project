@@ -49,4 +49,17 @@ export class Turma{
 	set Professor_responsavel(professor_responsavel: Professor){
         this.professor_responsavel = professor_responsavel;
 	}
+
+	get Lista_de_alunos(): Array<[Usuario, string]>{
+		return this.lista_de_alunos;
+	}
+
+	set Lista_de_alunos(lista_de_alunos: Array<[Usuario, string]>){
+		this.lista_de_alunos = lista_de_alunos;
+	}
+
+	Adicionar_convite(user: Usuario, status: string){
+
+		this.lista_de_alunos.push([user, status]);
+	}
 }

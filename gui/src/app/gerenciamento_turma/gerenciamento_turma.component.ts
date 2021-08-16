@@ -18,6 +18,7 @@ export class GerenciamentoTurmaComponent {
     notificacaoTexto: String = '';
     notificacao_login: String = '';
     turma = new Turma('', '', '', new Professor('', '', '', ''));
+    meu_usuario = null;
     
     constructor(private gerenciamentoTurmaService: GerenciamentoTurmaService) { 
         this.gerenciamentoTurmaService.minha_turma().subscribe(
@@ -87,6 +88,38 @@ export class GerenciamentoTurmaComponent {
                 }
                 console.log(this.turma);
             }
+        );
+    }
+
+    convidar(email: string){
+        
+        this.gerenciamentoTurmaService.convidar(email).subscribe(
+            (status) => {
+                if (status === "Usuario convidado com sucesso!") {
+
+                    this.controla_notificacao(true, true, status);
+                } else if(status === 'O email do convite não pode ser vazio!'){
+                    console.log(status)
+                    this.controla_notificacao(true, false, status);
+                } else if(status === 'O usuario convidado não existe no sistema!'){
+                    console.log(status)
+                    this.controla_notificacao(true, false, status);
+                } else if(status === 'O usuario já foi convidado!'){
+                    console.log(status)
+                    this.controla_notificacao(true, false, status);
+                }else{
+                    this.controla_notificacao(true, false, "Erro ao realizar o convite!");
+                }
+            }
+        );
+
+        this.gerenciamentoTurmaService.minha_turma().subscribe(
+            (minha_turma) => { 
+                if(minha_turma != null){
+
+                    Object.assign(this.turma, minha_turma);
+                }
+            },
         );
     }
 }
