@@ -3,8 +3,9 @@
     
     <h2 *ngIf='turmas.length === 0'>Nenhuma turma cadastrada no momento.</h2>
     <div *ngFor="let t of turmas; let i = index" class="turmaContainer">
-        <div class="LinhaPrincipal">
-            <label>{{t.Nome}}</label>
+
+        <div class = "links">
+            <a mat-button class = "gerenciar-turma-link" routerLink = "/gerenciamento_turma" (click)="envia_turma(t.Codigo)" >{{t.Nome}}</a>
         </div>
     </div>
 </section>

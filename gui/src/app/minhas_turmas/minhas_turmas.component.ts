@@ -39,4 +39,17 @@ export class MinhasTurmasComponent {
             },
         );
     }
+
+    envia_turma(codigo: string){
+
+        console.log(codigo);
+
+        this.minhasTurmasService.envia_turma(codigo).subscribe(
+            
+            (status) => {
+                
+                console.log(status);
+            }
+        );
+    }
 }

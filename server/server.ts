@@ -23,6 +23,7 @@ servidor.use(express.urlencoded({ extended: true}));
 let usuarios: Usuario[] = [];
 let turmas: Turma[] = [];
 let usuario_sessao = null;
+let turma_sessao = null;
 
 servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Response) => {
     let cpf = req.body.cpf;
@@ -218,7 +219,6 @@ servidor.post('/deleta', (req: express.Request, res: express.Response) => {
 })
 
 
-
 servidor.post('/criar_turma', (req: express.Request, res: express.Response) => {
     let nome = req.body.nome;
     let codigo = req.body.codigo;
@@ -282,7 +282,127 @@ servidor.post('/criar_turma', (req: express.Request, res: express.Response) => {
 
 
 servidor.get('/minhas_turmas', (req: express.Request, res: express.Response) => {
-    res.send((turmas));
+
+    let turmas_aux = [];
+
+    for (let i of turmas){
+        if(usuario_sessao.Cpf == i.Professor_responsavel.Cpf){
+            turmas_aux.push(i);
+        }
+    }
+
+    res.send((turmas_aux));
+})
+
+
+servidor.get('/minha_turma', (req: express.Request, res: express.Response) => {
+
+    res.send((turma_sessao));
+})
+
+
+
+servidor.post('/envia_turma', (req: express.Request, res: express.Response) => {
+
+    let turma_aux = null;
+
+    for (let i of turmas){
+
+        if(req.body.codigo == i.Codigo){
+            turma_aux = i;
+            break;
+        }
+    }
+
+    turma_sessao = turma_aux;
+
+    res.send({
+        success: 'Turma registrada com sucesso!',
+    })
+
+    console.log("Turma sessão: ", turma_sessao);
+})
+
+
+servidor.post('/atualiza_turma', (req: express.Request, res: express.Response) => {
+
+    if(usuario_sessao != null){
+        
+        let nome = req.body.nome;
+        let codigo = req.body.codigo;
+        let semestre = req.body.semestre;
+
+        let turma_modificada = null;
+
+        let nulo = false;
+        if (nome === '' || codigo === '' || semestre === ''){
+            nulo = true;
+        }
+
+        if(nulo){
+            res.send({
+                failure: 'Alguma das entradas esta nula!',
+            })
+        }
+        else{
+            let index = 0;
+            for (let i of turmas){
+                if(i.Codigo == turma_sessao.Codigo){
+                    break;
+                }
+                index += 1;
+            }
+
+            let existe = false;
+            let index_aux = 0;
+
+            turma_modificada = new Turma(nome, codigo, semestre, usuario_sessao);
+
+            for (let i of turmas){
+                if((i.Codigo == turma_modificada.Codigo) && index_aux != index){
+                    existe = true;
+                }
+                index_aux += 1;
+            }
+
+            if(existe){
+                res.send({
+                    failure: 'Uma outra turma com esse código ja existe na base de dados!',
+                })
+            }
+            else{
+                turmas[index] = turma_modificada;
+                turma_sessao = turma_modificada;
+
+                res.send({
+                    success: 'Atualizacao realizada com sucesso!',
+                })
+            }
+            console.log(turmas);
+            console.log(turma_sessao);
+        }
+    }
+})
+
+
+servidor.post('/deleta_turma', (req: express.Request, res: express.Response) => {
+
+    let turma_atual;
+    for (let i of turmas){
+        if(i.Codigo == turma_sessao.Codigo){
+            turma_atual = i;
+            break;
+        }
+    }
+    turmas = turmas.filter(obj => obj !== turma_atual);
+    turma_sessao = null;
+
+    res.send({
+        success: 'Turma deletada do sistema com sucesso!',
+    })
+
+    console.log(turmas);
+    console.log(turma_sessao);
 })
 
 

@@ -21,4 +21,20 @@ export class MinhasTurmasService {
             retry(2)
         );
     }
+
+    envia_turma(codigo: string): Observable<String>{
+
+        let info = {"codigo" : codigo};
+
+        return this.http.post<any>(this.URL + '/envia_turma', info).pipe(
+            retry(2),
+            map(res => {
+                if (res.success) {
+                    return res.success;
+                } else {
+                    return res.failure;
+                }
+            })
+        );
+    }
 }

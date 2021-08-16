@@ -22,6 +22,9 @@ import { CriarTurmaService } from './criar_turma/criar_turma.service';
 import { MinhasTurmasComponent } from './minhas_turmas/minhas_turmas.component';
 import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
 
+import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
+import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
+
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
     MinhaContaComponent,
     CriarTurmaComponent,
     MinhasTurmasComponent,
+    GerenciamentoTurmaComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,9 +70,15 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
         path: 'minhas_turmas',
         component: MinhasTurmasComponent
       },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'gerenciamento_turma',
+        component: GerenciamentoTurmaComponent
+      },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService],
+  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
