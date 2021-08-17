@@ -8,11 +8,22 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { CadastroService } from './cadastro/cadastro.service';
+
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
+
 import { MinhaContaComponent } from './minha_conta/minha_conta.component';
 import { MinhaContaService } from './minha_conta/minha_conta.service';
 import { NavbarComponent } from './navbar/navbar.component';
+
+import { CriarTurmaComponent } from './criar_turma/criar_turma.component';
+import { CriarTurmaService } from './criar_turma/criar_turma.service';
+
+import { MinhasTurmasComponent } from './minhas_turmas/minhas_turmas.component';
+import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
+
+import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
+import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
 
 
 @NgModule({
@@ -22,6 +33,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     CadastroComponent,
     LoginComponent,
     MinhaContaComponent,
+    CriarTurmaComponent,
+    MinhasTurmasComponent,
+    GerenciamentoTurmaComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,9 +58,27 @@ import { NavbarComponent } from './navbar/navbar.component';
         path: 'minha_conta',
         component: MinhaContaComponent
       },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'criar_turma',
+        component: CriarTurmaComponent
+      },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'minhas_turmas',
+        component: MinhasTurmasComponent
+      },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'gerenciamento_turma',
+        component: GerenciamentoTurmaComponent
+      },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService],
+  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
