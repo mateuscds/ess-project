@@ -11,7 +11,7 @@ function calculaMascara(cpf: string) {
     var parte3_numero = 2*Number(parte3);
     var parte4_numero = Number(parte4);
 
-    var mascara = "" + parte1_numero + '_' + parte2_numero + '_' + parte3_numero + '_' + parte4_numero
+    var mascara = "" + parte1_numero + '_' + parte2_numero + '_' + parte3_numero + '_' + parte4_numero;
     
     return mascara;
  }

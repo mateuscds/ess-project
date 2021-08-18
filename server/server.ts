@@ -200,22 +200,29 @@ servidor.post('/desloga', (req: express.Request, res: express.Response) => {
 
 servidor.post('/deleta', (req: express.Request, res: express.Response) => {
 
-    let usuario_atual;
-    for (let i of usuarios){
-        if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
-            usuario_atual = i;
-            break;
+    if(usuario_sessao != null){
+        let usuario_atual;
+        for (let i of usuarios){
+            if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
+                usuario_atual = i;
+                break;
+            }
         }
+        usuarios = usuarios.filter(obj => obj !== usuario_atual);
+        usuario_sessao = null;
+
+        res.send({
+            success: 'Usuario deletado do sistema com sucesso!',
+        })
+
+        console.log(usuarios);
+        console.log(usuario_sessao);
     }
-    usuarios = usuarios.filter(obj => obj !== usuario_atual);
-    usuario_sessao = null;
-
-    res.send({
-        success: 'Usuario deletado do sistema com sucesso!',
-    })
-
-    console.log(usuarios);
-    console.log(usuario_sessao);
+    else{
+        res.send({
+            failure: 'Nenhum usuario foi deletado do sistema!',
+        })
+    }
 })
 
 
