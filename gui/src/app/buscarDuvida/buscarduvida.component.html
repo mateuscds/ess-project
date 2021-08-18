@@ -1,18 +1,29 @@
 <section class="buscarDuvidaView">
     <h1 class="buscarDuvidaTitle">BUSCAR DUVIDA</h1>
     <table>
-    <tr>
-        <td><input #searchBar type="text" name="searchBar" placeholder="Insira a dúvida a ser buscada"/></td>
-        <td><input #bothConcluCheck type="radio" name="conclSelection" checked>Concluídas e Não concluídas</td>
-        <td><input #concluidaCheck type="radio" name="conclSelection">Concluídas</td>
-        <td><input #naoConcluidaCheck type="radio" name="conclSelection">Não Concluídas</td>
-        <td><button (click)="filtrarDuvidas(searchBar.value, bothConcluCheck.checked, concluidaCheck.checked, 
-                            naoConcluidaCheck.checked)">Buscar</button></td>
-    </tr>
-    <h3 *ngIf ="FiltradasDuvidas.length === 0"> Nenhuma Dúvida Encontrada </h3>
-    <tr *ngFor="let d of FiltradasDuvidas" name="linhaduvida">
-        <td><a href="" name="linhanomeduvida" >{{d.titulo}}</a></td>        
-    </tr>
+        <tr>
+            <td><input #searchBar type="text" name="searchBar" placeholder="Insira a dúvida a ser buscada"/></td>
+            <td><input #bothConcluCheck type="radio" name="conclSelection" checked>Concluídas e Não concluídas</td>
+            <td><input #concluidaCheck type="radio" name="conclSelection">Concluídas</td>
+            <td><input #naoConcluidaCheck type="radio" name="conclSelection">Não Concluídas</td>
+            <td><button (click)="filtrarDuvidas(searchBar.value, bothConcluCheck.checked, concluidaCheck.checked, 
+                                naoConcluidaCheck.checked)">Buscar</button></td>
+        </tr>
+    </table>
+    <table>
+        <h3 *ngIf="FiltradasDuvidas.length === 0"> Nenhuma Dúvida Encontrada </h3>
+        <thead *ngIf="FiltradasDuvidas.length !== 0">
+            <tr>
+                <th class="htable"> Título da Dúvida </th>
+                <th class="htable"> Estado da dúvida </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of FiltradasDuvidas" name="linhaduvida">
+                <td><a href="" name="titulo-duvida" >{{d.titulo}}</a></td>       
+                <td><label name="status-duvida">{{d.status ? 'Concluída' : 'Não concluída'}}</label></td>           
+            </tr>
+        </tbody>
     </table>
 
 </section>
