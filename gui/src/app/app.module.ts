@@ -25,6 +25,9 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
 import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
 import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
 
+import { NotificadorComponent } from './notificador/notificador.component';
+import { NotificadorService } from './notificador/notificador.service';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
     CriarTurmaComponent,
     MinhasTurmasComponent,
     GerenciamentoTurmaComponent,
+    NotificadorComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +82,7 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
       },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService],
+  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService, NotificadorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
