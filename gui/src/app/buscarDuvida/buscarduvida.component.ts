@@ -16,6 +16,8 @@ export class Buscarduvida implements OnInit{
     private todasDuvidas: Duvida[] = [];
     private filtradasDuvidas: Duvida[] = [];
 
+    typeSearch: string = "titulo";
+
     constructor(private buscarDuvidaService: BuscarDuvidaService) {}
 
     ngOnInit() {
@@ -29,13 +31,20 @@ export class Buscarduvida implements OnInit{
         return this.filtradasDuvidas
     }
     
-    filtrarDuvidas(tituloDuvida: string, ambasConcl:boolean, concluida: boolean, naoConcluida: boolean): void{
+    filtrarDuvidas(filtro: string, ambasConcl:boolean, concluida: boolean, naoConcluida: boolean): void{
         this.buscarTodasDuvidas()
 
-        console.log(this.todasDuvidas)
+        // console.log(this.todasDuvidas)
         let duvidas = this.todasDuvidas
-        if (tituloDuvida != "") 
-            duvidas = this.filtrarDuvidasPeloTitulo(duvidas, tituloDuvida)
+
+        if(this.typeSearch === 'titulo') {
+            if (filtro != "") 
+                duvidas = this.filtrarDuvidasPeloTitulo(duvidas, filtro)
+        }
+        else if(this.typeSearch === 'assunto') {
+            if (filtro != "") 
+                duvidas = this.filtrarDuvidasPorAssunto(duvidas, filtro)
+        }
         
         if (!ambasConcl) {
             if (concluida) {
@@ -56,6 +65,12 @@ export class Buscarduvida implements OnInit{
         return duvidas
     }
     
+    filtrarDuvidasPorAssunto(duvidas: Duvida[], filtro: string): Duvida[] {
+        return duvidas.filter(duvida => {
+            return duvida.assunto.toUpperCase() === filtro.toUpperCase()
+        })
+    }
+
     filtrarDuvidasConcluidas(duvidas: Duvida[]): Duvida[] {
         duvidas = duvidas.filter(duvida => {
             return duvida.status

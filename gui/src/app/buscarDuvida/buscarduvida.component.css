@@ -7,3 +7,7 @@
 {
     padding-left: 10px; /* Only right padding*/
 }
+
+.search {
+    min-width: 230px;
+}

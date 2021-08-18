@@ -26,6 +26,7 @@ import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento
 import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
 import { Buscarduvida } from './buscarDuvida/buscarduvida.component'
 import { BuscarDuvidaService } from './buscarDuvida/buscarduvida.service'
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { BuscarDuvidaService } from './buscarDuvida/buscarduvida.service'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot([
       {
         path: 'cadastro',
