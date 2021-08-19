@@ -1,10 +1,11 @@
 <section class="notificadorView">
     <h1 class="notificadorTitle">Notificacoes</h1>
-    <div class="notificacoes">
-        <li> Teste1 </li>
-        <li> Teste2 </li>
-        <li> Teste3 </li>
+    <div *ngIf='logado' class="container">
+        <div class="notificacoes">
+            <tr *ngFor="let a of notificador.Notificacoes" name="notiflist">
+                <td>{{a.Mensagem}}</td>
+            </tr>
+        </div>
     </div>
     <button (click)="atualizarNotificacoes()"> Atualizar </button>
-    <button (click)="limparNotificacoes()"> Limpar </button>
 </section>

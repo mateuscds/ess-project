@@ -20,18 +20,13 @@ export class NotificadorService {
 
     atualizar(): Observable<Notificador> {
         return this.http.get<any>(this.URL + '/notificacoes').pipe(
-            retry(2),
-            map(notificador => {
-                return notificador;
-            })
+            retry(2)
         );
     }
 
-    limpar(cpf_user: string): Observable<String>{
 
-        let informacoes = {'cpf_user': cpf_user};
-
-        return this.http.post<any>(this.URL + '/limpar_notificacoes', informacoes).pipe(
+    logado(): Observable<Usuario> {
+        return this.http.get<any>(this.URL + '/logado').pipe(
             retry(2)
         );
     }

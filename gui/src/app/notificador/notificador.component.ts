@@ -15,25 +15,46 @@ export class NotificadorComponent {
     usuarios: Usuario[] = [];
     turmas: Turma[] = [];
 
-    notificador: Notificador = new Notificador("");
+    notificador:Notificador = new Notificador("");
 
-    constructor(private notificadorservice: NotificadorService) { }
+    logado: boolean = false;
+
+    cpf_user:string = "";
+
+    constructor(private notificadorservice: NotificadorService) { 
+        this.atualizarNotificacoes();
+    }
+
+
+    alguemLogado(): void{
+        this.notificadorservice.logado().subscribe(
+            (usuario) => {
+                if (usuario != null) {
+                    this.cpf_user = usuario.Cpf;
+                    this.logado = true;
+                    console.log("Tem gente logado");
+                } else {
+                    this.logado = false;
+                }
+            },
+        );
+    }
+
 
     atualizarNotificacoes(): void{
-    
+        this.alguemLogado();
         this.notificadorservice.atualizar().subscribe(
             (notificador) => {
-                this.notificador = notificador;
+                if (notificador != undefined) {  
+                    this.notificador = notificador;
+                } else {
+                    console.log("Cara veio nulo")
+                }
             },
         );
-    }
 
-    limparNotificacoes(): void{
-    
-        this.notificadorservice.limpar(this.notificador.Cpf_user).subscribe(
-            (msg) => {
-                this.notificador = new Notificador(this.notificador.Cpf_user);
-            },
-        );
+        console.log("Atualizou");
+        console.log(this.notificador);
     }
+    
 }

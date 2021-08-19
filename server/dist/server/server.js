@@ -5,6 +5,7 @@ const express = require("express");
 const aluno_1 = require("../common/aluno");
 const professor_1 = require("../common/professor");
 const turma_1 = require("../common/turma");
+const notificador_1 = require("../common/notificador");
 var servidor = express();
 exports.servidor = servidor;
 var allowCrossDomain = function (req, res, next) {
@@ -20,6 +21,7 @@ let usuarios = [];
 let turmas = [];
 let usuario_sessao = null;
 let turma_sessao = null;
+let notificadores = [];
 servidor.post('/usuarios/cadastrar', (req, res) => {
     let cpf = req.body.cpf;
     let nome = req.body.nome;
@@ -88,6 +90,26 @@ servidor.post('/login', (req, res) => {
             }
         }
         if (existe) {
+            let index = 0;
+            let flag = 0;
+            if (notificadores.length == 0) {
+                notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
+                console.log("Tava vazio");
+            }
+            else {
+                for (let notificador of notificadores) {
+                    if (notificador.Cpf_user == usuario_sessao.Cpf) {
+                        notificadores[index] = new notificador_1.Notificador(usuario_sessao.Cpf);
+                        console.log("Tava criado já");
+                        flag = 1;
+                    }
+                    index += 1;
+                }
+                if (flag == 0) {
+                    notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
+                    console.log("Nãoo tava criado");
+                }
+            }
             res.send({
                 success: 'Login realizado com sucesso!',
             });
@@ -98,6 +120,8 @@ servidor.post('/login', (req, res) => {
             });
         }
     }
+    console.log("memes");
+    console.log(notificadores);
     console.log(usuario_sessao);
 });
 servidor.post('/atualiza_cadastro', (req, res) => {
@@ -433,7 +457,6 @@ servidor.post('/atualiza_convite', (req, res) => {
                 }
             }
             turmas[index_turmas].Lista_de_alunos = lista_alunos_aux;
-            //turmas[index_turmas].Lista_de_alunos = turmas[index_turmas].Lista_de_alunos.filter(obj => obj !== [usuario_sessao, "Pendente"]);
             res.send({
                 success: 'Convite rejeitado com sucesso!',
             });
@@ -441,6 +464,25 @@ servidor.post('/atualiza_convite', (req, res) => {
     }
     console.log(turmas);
     console.log(turmas[index_turmas].Lista_de_alunos);
+});
+servidor.get('/notificacoes', (req, res) => {
+    let key = -1;
+    let index = 0;
+    for (let usuario of usuarios) {
+        if (usuario.Cpf == usuario_sessao.Cpf) {
+            key = index;
+        }
+        index += 1;
+    }
+    console.log("Achei esse cara: ");
+    console.log(notificadores[key]);
+    if (key == -1) {
+        console.log("Ninguem key = -1");
+    }
+    res.send((notificadores[key]));
+});
+servidor.get('/logado', (req, res) => {
+    res.send((usuario_sessao));
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');

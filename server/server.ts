@@ -6,6 +6,8 @@ import { Aluno } from '../common/aluno';
 import { Professor } from '../common/professor';
 import { Cadastro } from './cadastro';
 import { Turma } from '../common/turma';
+import { Notificador } from '../common/notificador';
+import { Notificacao } from '../common/notificacao';
 
 var servidor = express();
 
@@ -24,6 +26,7 @@ let usuarios: Usuario[] = [];
 let turmas: Turma[] = [];
 let usuario_sessao = null;
 let turma_sessao = null;
+let notificadores: Notificador[] = [];
 
 servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Response) => {
     let cpf = req.body.cpf;
@@ -103,6 +106,30 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
         }
 
         if(existe){
+            
+            let index = 0;
+            let flag = 0;
+
+            if (notificadores.length == 0){
+                notificadores.push(new Notificador(usuario_sessao.Cpf));
+                console.log("Tava vazio");
+            } else {
+                for (let notificador of notificadores){
+                    if (notificador.Cpf_user == usuario_sessao.Cpf){
+                        notificadores[index] = new Notificador(usuario_sessao.Cpf);
+                        console.log("Tava criado já");
+                        flag = 1;
+                    }
+                    index += 1;
+                }
+
+                if (flag == 0){
+                    notificadores.push(new Notificador(usuario_sessao.Cpf));
+                    console.log("Nãoo tava criado");
+                }
+            }
+
+
             res.send({
                 success: 'Login realizado com sucesso!',
             })
@@ -112,7 +139,9 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
                 failure: 'E-mail ou senha incorretos!',
             })
         }
-    }    
+    }  
+    console.log("memes");
+    console.log(notificadores);  
     console.log(usuario_sessao);
 })
 
@@ -556,6 +585,34 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
     console.log(turmas[index_turmas].Lista_de_alunos);
 })
 
+
+
+
+servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
+    let key = -1;
+    let index = 0;
+    for (let usuario of usuarios){
+        if (usuario.Cpf == usuario_sessao.Cpf){
+            key = index;
+        }
+        index += 1;
+    }
+    console.log("Achei esse cara: ")
+    console.log(notificadores[key])
+    
+    if (key == -1) {
+        console.log("Ninguem key = -1")
+    }
+
+    res.send((notificadores[key]));
+})
+
+
+
+
+servidor.get('/logado', (req: express.Request, res: express.Response) => {
+    res.send((usuario_sessao));
+})
 
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!')
