@@ -66,6 +66,34 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
             })
         }
         else{
+
+
+            let index = 0;
+            let flag = 0;
+
+            if (notificadores.length == 0){
+                notificadores.push(new Notificador(cpf));
+                console.log("Tava vazio");
+                notificadores[0].notificacoes.push(nome);
+            } else {
+                for (let notificador of notificadores){
+                    if (notificador.Cpf_user == cpf){
+                        console.log("Tava criado já - cadastro");
+                        flag = 1;
+                        break;
+                    }
+                    index += 1;
+                }
+
+                if (flag == 0){
+                    notificadores.push(new Notificador(cpf));
+                    notificadores[index].notificacoes.push(nome);
+                    console.log("Não tava criado");
+                }
+
+            }
+
+
             //console.log(usuarios);
             usuarios.push(usuario);
             //console.log(usuarios);
@@ -107,30 +135,15 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
 
         if(existe){
             
-            let index = 0;
-            let flag = 0;
-
-            if (notificadores.length == 0){
-                notificadores.push(new Notificador(usuario_sessao.Cpf));
-                console.log("Tava vazio");
-                notificadores[0].notificacoes.push(usuario_sessao.Nome);
-            } else {
-                for (let notificador of notificadores){
-                    if (notificador.Cpf_user == usuario_sessao.Cpf){
-                        console.log("Tava criado já");
-                        flag = 1;
-                        break;
-                    }
-                    index += 1;
+           
+            for (let notificador of notificadores){
+                if (notificador.Cpf_user == usuario_sessao.Cpf){
+                    console.log("Tava criado já - login");
+                    break;
                 }
-
-                if (flag == 0){
-                    notificadores.push(new Notificador(usuario_sessao.Cpf));
-                    notificadores[index].notificacoes.push(usuario_sessao.Nome);
-                    console.log("Não tava criado");
-                }
-
             }
+
+             
 
             res.send({
                 success: 'Login realizado com sucesso!',

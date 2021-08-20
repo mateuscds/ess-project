@@ -56,6 +56,28 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
             });
         }
         else {
+            let index = 0;
+            let flag = 0;
+            if (notificadores.length == 0) {
+                notificadores.push(new notificador_1.Notificador(cpf));
+                console.log("Tava vazio");
+                notificadores[0].notificacoes.push(nome);
+            }
+            else {
+                for (let notificador of notificadores) {
+                    if (notificador.Cpf_user == cpf) {
+                        console.log("Tava criado já - cadastro");
+                        flag = 1;
+                        break;
+                    }
+                    index += 1;
+                }
+                if (flag == 0) {
+                    notificadores.push(new notificador_1.Notificador(cpf));
+                    notificadores[index].notificacoes.push(nome);
+                    console.log("Não tava criado");
+                }
+            }
             //console.log(usuarios);
             usuarios.push(usuario);
             //console.log(usuarios);
@@ -90,26 +112,10 @@ servidor.post('/login', (req, res) => {
             }
         }
         if (existe) {
-            let index = 0;
-            let flag = 0;
-            if (notificadores.length == 0) {
-                notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
-                console.log("Tava vazio");
-                notificadores[0].notificacoes.push(usuario_sessao.Nome);
-            }
-            else {
-                for (let notificador of notificadores) {
-                    if (notificador.Cpf_user == usuario_sessao.Cpf) {
-                        console.log("Tava criado já");
-                        flag = 1;
-                        break;
-                    }
-                    index += 1;
-                }
-                if (flag == 0) {
-                    notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
-                    notificadores[index].notificacoes.push(usuario_sessao.Nome);
-                    console.log("Não tava criado");
+            for (let notificador of notificadores) {
+                if (notificador.Cpf_user == usuario_sessao.Cpf) {
+                    console.log("Tava criado já - login");
+                    break;
                 }
             }
             res.send({
@@ -489,10 +495,10 @@ servidor.post('/atualiza_convite', (req, res) => {
 });
 servidor.get('/notificacoes', (req, res) => {
     if (usuario_sessao != null) {
-        console.log(usuario_sessao.Nome + " tá logado caraio");
+        console.log(usuario_sessao.Nome + " tá logado");
     }
     else {
-        console.log("NGM tá logado caraio");
+        console.log("Ngm tá logado");
     }
     let key = -1;
     let index = 0;
