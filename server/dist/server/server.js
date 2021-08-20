@@ -171,20 +171,27 @@ servidor.post('/desloga', (req, res) => {
     console.log(usuario_sessao);
 });
 servidor.post('/deleta', (req, res) => {
-    let usuario_atual;
-    for (let i of usuarios) {
-        if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
-            usuario_atual = i;
-            break;
+    if (usuario_sessao != null) {
+        let usuario_atual;
+        for (let i of usuarios) {
+            if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
+                usuario_atual = i;
+                break;
+            }
         }
+        usuarios = usuarios.filter(obj => obj !== usuario_atual);
+        usuario_sessao = null;
+        res.send({
+            success: 'Usuario deletado do sistema com sucesso!',
+        });
+        console.log(usuarios);
+        console.log(usuario_sessao);
     }
-    usuarios = usuarios.filter(obj => obj !== usuario_atual);
-    usuario_sessao = null;
-    res.send({
-        success: 'Usuario deletado do sistema com sucesso!',
-    });
-    console.log(usuarios);
-    console.log(usuario_sessao);
+    else {
+        res.send({
+            failure: 'Nenhum usuario foi deletado do sistema!',
+        });
+    }
 });
 servidor.post('/criar_turma', (req, res) => {
     let nome = req.body.nome;
@@ -433,7 +440,6 @@ servidor.post('/atualiza_convite', (req, res) => {
                 }
             }
             turmas[index_turmas].Lista_de_alunos = lista_alunos_aux;
-            //turmas[index_turmas].Lista_de_alunos = turmas[index_turmas].Lista_de_alunos.filter(obj => obj !== [usuario_sessao, "Pendente"]);
             res.send({
                 success: 'Convite rejeitado com sucesso!',
             });
