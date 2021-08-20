@@ -95,18 +95,20 @@ servidor.post('/login', (req, res) => {
             if (notificadores.length == 0) {
                 notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
                 console.log("Tava vazio");
+                notificadores[0].notificacoes.push(usuario_sessao.Nome);
             }
             else {
                 for (let notificador of notificadores) {
                     if (notificador.Cpf_user == usuario_sessao.Cpf) {
-                        notificadores[index] = new notificador_1.Notificador(usuario_sessao.Cpf);
                         console.log("Tava criado já");
                         flag = 1;
+                        break;
                     }
                     index += 1;
                 }
                 if (flag == 0) {
                     notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
+                    notificadores[index].notificacoes.push(usuario_sessao.Nome);
                     console.log("Nãoo tava criado");
                 }
             }
@@ -468,21 +470,22 @@ servidor.post('/atualiza_convite', (req, res) => {
 servidor.get('/notificacoes', (req, res) => {
     let key = -1;
     let index = 0;
-    for (let usuario of usuarios) {
-        if (usuario.Cpf == usuario_sessao.Cpf) {
-            key = index;
+    if (usuario_sessao != null) {
+        for (let usuario of usuarios) {
+            if (usuario.Cpf == usuario_sessao.Cpf) {
+                key = index;
+            }
+            index += 1;
         }
-        index += 1;
+        console.log(notificadores[key]);
+        res.send((notificadores[key]));
     }
-    console.log("Achei esse cara: ");
-    console.log(notificadores[key]);
-    if (key == -1) {
-        console.log("Ninguem key = -1");
+    else {
+        res.send([]);
     }
-    res.send((notificadores[key]));
 });
 servidor.get('/logado', (req, res) => {
-    res.send((usuario_sessao));
+    res.send(usuario_sessao);
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');

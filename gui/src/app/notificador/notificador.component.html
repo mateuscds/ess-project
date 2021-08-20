@@ -1,9 +1,9 @@
 <section class="notificadorView">
     <h1 class="notificadorTitle">Notificacoes</h1>
-    <div *ngIf='logado' class="container">
+    <div *ngIf='alguem_logado'>
         <div class="notificacoes">
-            <tr *ngFor="let a of notificador.Notificacoes" name="notiflist">
-                <td>{{a.Mensagem}}</td>
+            <tr *ngFor="let a of notificador.notificacoes" name="notiflist">
+            <td><li>{{a}}</li></td> 
             </tr>
         </div>
     </div>

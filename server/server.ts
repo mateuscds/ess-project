@@ -113,22 +113,24 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
             if (notificadores.length == 0){
                 notificadores.push(new Notificador(usuario_sessao.Cpf));
                 console.log("Tava vazio");
+                notificadores[0].notificacoes.push(usuario_sessao.Nome);
             } else {
                 for (let notificador of notificadores){
                     if (notificador.Cpf_user == usuario_sessao.Cpf){
-                        notificadores[index] = new Notificador(usuario_sessao.Cpf);
                         console.log("Tava criado já");
                         flag = 1;
+                        break;
                     }
                     index += 1;
                 }
 
                 if (flag == 0){
                     notificadores.push(new Notificador(usuario_sessao.Cpf));
+                    notificadores[index].notificacoes.push(usuario_sessao.Nome);
                     console.log("Nãoo tava criado");
                 }
-            }
 
+            }
 
             res.send({
                 success: 'Login realizado com sucesso!',
@@ -521,7 +523,6 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
 })
 
 
-
 servidor.post('/atualiza_convite', (req: express.Request, res: express.Response) => {
 
     let codigo = req.body.codigo;
@@ -586,32 +587,28 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
 })
 
 
-
-
 servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
     let key = -1;
     let index = 0;
-    for (let usuario of usuarios){
-        if (usuario.Cpf == usuario_sessao.Cpf){
-            key = index;
+    if (usuario_sessao != null){
+        for (let usuario of usuarios){
+            if (usuario.Cpf == usuario_sessao.Cpf){
+                key = index;
+            }
+            index += 1;
         }
-        index += 1;
-    }
-    console.log("Achei esse cara: ")
-    console.log(notificadores[key])
-    
-    if (key == -1) {
-        console.log("Ninguem key = -1")
-    }
 
-    res.send((notificadores[key]));
+
+        console.log(notificadores[key]);
+        res.send((notificadores[key]));
+    } else {
+        res.send([]);
+    }
 })
 
 
-
-
 servidor.get('/logado', (req: express.Request, res: express.Response) => {
-    res.send((usuario_sessao));
+    res.send(usuario_sessao);
 })
 
 var server = servidor.listen(3000, function () {

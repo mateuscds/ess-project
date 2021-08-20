@@ -20,14 +20,14 @@ export class NotificadorService {
 
     atualizar(): Observable<Notificador> {
         return this.http.get<any>(this.URL + '/notificacoes').pipe(
-            retry(2)
+            retry(5)
         );
     }
 
 
     logado(): Observable<Usuario> {
         return this.http.get<any>(this.URL + '/logado').pipe(
-            retry(2)
+            retry(5)
         );
     }
 }

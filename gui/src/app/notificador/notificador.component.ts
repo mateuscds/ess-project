@@ -17,44 +17,61 @@ export class NotificadorComponent {
 
     notificador:Notificador = new Notificador("");
 
-    logado: boolean = false;
+    alguem_logado: boolean = false;
 
     cpf_user:string = "";
 
     constructor(private notificadorservice: NotificadorService) { 
-        this.atualizarNotificacoes();
+        for (let i = 0; i < 5; i++) {  
+            this.notificadorservice.atualizar().subscribe(
+                (notificador) => {
+                    if (notificador != undefined) {  
+                        this.notificador = notificador;
+                    } else {
+                        console.log("Cara veio nulo")
+                    }
+                },
+            );
+        }
     }
 
 
     alguemLogado(): void{
-        this.notificadorservice.logado().subscribe(
-            (usuario) => {
-                if (usuario != null) {
-                    this.cpf_user = usuario.Cpf;
-                    this.logado = true;
-                    console.log("Tem gente logado");
-                } else {
-                    this.logado = false;
-                }
-            },
-        );
+        for (let i = 0; i < 5; i++) {
+            this.notificadorservice.logado().subscribe(
+                (usuario) => {
+                    if (usuario != null) {
+                        this.cpf_user = usuario.Cpf;
+                        this.alguem_logado = true;
+                    } else {
+                        this.alguem_logado = false;
+                        this.notificador = new Notificador("");
+                    }
+                },
+            );
+        }
     }
 
 
     atualizarNotificacoes(): void{
         this.alguemLogado();
-        this.notificadorservice.atualizar().subscribe(
-            (notificador) => {
-                if (notificador != undefined) {  
-                    this.notificador = notificador;
-                } else {
-                    console.log("Cara veio nulo")
-                }
-            },
-        );
+        for (let i = 0; i < 5; i++) {  
+            this.notificadorservice.atualizar().subscribe(
+                (notificador) => {
+                    if (notificador != undefined) {  
+                        this.notificador = notificador;
+                    } else {
+                        console.log("Cara veio nulo")
+                    }
+                },
+            );
+        }
+        
 
-        console.log("Atualizou");
         console.log(this.notificador);
+        console.log("mensagens: ");
+        console.log(this.notificador.notificacoes);
+
     }
     
 }

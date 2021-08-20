@@ -2,11 +2,11 @@ import { Notificacao } from './notificacao';
 
 export class Notificador{
 
-	private notificacoes: Array<Notificacao>; 
+	notificacoes: Array<string>; 
     private cpf_user: string;
 
 	constructor(cpf_user: string) {
-		let n = new Notificacao("Inicial");
+		let n = "Inicial";
         this.notificacoes = [];
 		this.notificacoes.push(n);
         this.cpf_user = cpf_user;
@@ -20,11 +20,11 @@ export class Notificador{
         this.cpf_user = cpf_user;
 	}
 
-    get Notificacoes(): Array<Notificacao>{
+    get Notificacoes(): Array<string>{
 		return this.notificacoes;
 	}
 
-	set Notificacoes(notificacoes: Array<Notificacao>){
+	set Notificacoes(notificacoes: Array<string>){
 		this.notificacoes = notificacoes;
 	}
 
