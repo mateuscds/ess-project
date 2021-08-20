@@ -127,7 +127,7 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
                 if (flag == 0){
                     notificadores.push(new Notificador(usuario_sessao.Cpf));
                     notificadores[index].notificacoes.push(usuario_sessao.Nome);
-                    console.log("Nãoo tava criado");
+                    console.log("Não tava criado");
                 }
 
             }
@@ -481,6 +481,10 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
             })
         }
         else{
+            
+            
+
+
 
             let index = 0;
             for (let i of turmas){
@@ -506,6 +510,30 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
                 })
             }
             else{
+                let i = 0;
+                for (let notificador of notificadores){
+                    if (notificador.Cpf_user == usuario_convidado.Cpf){
+                        console.log("Achei aluno: " + usuario_convidado.Nome);
+                        let msg = "Olá, " + usuario_convidado.Nome + "! Você foi convidado para participar da turma " + turma_sessao.Nome + ".";
+                        notificadores[i].Notificacoes.push(msg);
+                        break;
+                    }
+                    i += 1;
+                }
+
+                i = 0;
+                for (let notificador of notificadores){
+                    if (notificador.Cpf_user == usuario_sessao.Cpf){
+                        console.log("Achei professor: " + usuario_sessao.Nome);
+                        let msg = "Seu convite para " + usuario_convidado.Email + " está pendente!" ;
+                        notificadores[i].Notificacoes.push(msg);
+                        break;
+                    }
+                    i += 1;
+                }
+
+
+
                 turmas[index].Adicionar_convite(usuario_convidado, "Pendente");
                 turma_sessao = turmas[index];
 
@@ -588,6 +616,13 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
 
 
 servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
+
+    if (usuario_sessao != null){
+        console.log(usuario_sessao.Nome + " tá logado");
+    } else {
+        console.log("Ngm tá logado");
+    }
+
     let key = -1;
     let index = 0;
     if (usuario_sessao != null){

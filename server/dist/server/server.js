@@ -109,7 +109,7 @@ servidor.post('/login', (req, res) => {
                 if (flag == 0) {
                     notificadores.push(new notificador_1.Notificador(usuario_sessao.Cpf));
                     notificadores[index].notificacoes.push(usuario_sessao.Nome);
-                    console.log("Nãoo tava criado");
+                    console.log("Não tava criado");
                 }
             }
             res.send({
@@ -409,6 +409,26 @@ servidor.post('/convidar_aluno', (req, res) => {
                 });
             }
             else {
+                let i = 0;
+                for (let notificador of notificadores) {
+                    if (notificador.Cpf_user == usuario_convidado.Cpf) {
+                        console.log("Achei aluno: " + usuario_convidado.Nome);
+                        let msg = "Olá, " + usuario_convidado.Nome + "! Você foi convidado para participar da turma " + turma_sessao.Nome + ".";
+                        notificadores[i].Notificacoes.push(msg);
+                        break;
+                    }
+                    i += 1;
+                }
+                i = 0;
+                for (let notificador of notificadores) {
+                    if (notificador.Cpf_user == usuario_sessao.Cpf) {
+                        console.log("Achei professor: " + usuario_sessao.Nome);
+                        let msg = "Seu convite para " + usuario_convidado.Email + " está pendente!";
+                        notificadores[i].Notificacoes.push(msg);
+                        break;
+                    }
+                    i += 1;
+                }
                 turmas[index].Adicionar_convite(usuario_convidado, "Pendente");
                 turma_sessao = turmas[index];
                 res.send({
@@ -468,6 +488,12 @@ servidor.post('/atualiza_convite', (req, res) => {
     console.log(turmas[index_turmas].Lista_de_alunos);
 });
 servidor.get('/notificacoes', (req, res) => {
+    if (usuario_sessao != null) {
+        console.log(usuario_sessao.Nome + " tá logado caraio");
+    }
+    else {
+        console.log("NGM tá logado caraio");
+    }
     let key = -1;
     let index = 0;
     if (usuario_sessao != null) {
