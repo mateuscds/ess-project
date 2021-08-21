@@ -6,9 +6,7 @@ export class Notificador{
     private cpf_user: string;
 
 	constructor(cpf_user: string) {
-		let n = "Inicial";
         this.notificacoes = [];
-		this.notificacoes.push(n);
         this.cpf_user = cpf_user;
 	}
 

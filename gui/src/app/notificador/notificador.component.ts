@@ -20,6 +20,7 @@ export class NotificadorComponent {
     alguem_logado: boolean = false;
 
     cpf_user:string = "";
+    nome_user:string = "";
 
     constructor(private notificadorservice: NotificadorService) { 
         for (let i = 0; i < 5; i++) {  
@@ -38,10 +39,11 @@ export class NotificadorComponent {
 
     alguemLogado(): void{
         for (let i = 0; i < 5; i++) {
-            this.notificadorservice.logado().subscribe(
+            this.notificadorservice.meu_usuario().subscribe(
                 (usuario) => {
                     if (usuario != null) {
-                        this.cpf_user = usuario.Cpf;
+                        this.cpf_user = usuario["cpf"];
+                        this.nome_user = usuario["nome"];
                         this.alguem_logado = true;
                     } else {
                         this.alguem_logado = false;
@@ -50,6 +52,7 @@ export class NotificadorComponent {
                 },
             );
         }
+        
     }
 
 

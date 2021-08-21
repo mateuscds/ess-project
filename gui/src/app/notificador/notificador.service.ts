@@ -25,9 +25,9 @@ export class NotificadorService {
     }
 
 
-    logado(): Observable<Usuario> {
-        return this.http.get<any>(this.URL + '/logado').pipe(
-            retry(5)
+    meu_usuario(): Observable<Usuario>{
+        return this.http.get<any>(this.URL + '/meu_usuario').pipe(
+            retry(2)
         );
     }
 }

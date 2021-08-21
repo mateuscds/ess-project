@@ -61,7 +61,7 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
             if (notificadores.length == 0) {
                 notificadores.push(new notificador_1.Notificador(cpf));
                 console.log("Tava vazio");
-                notificadores[0].notificacoes.push(nome);
+                // notificadores[0].notificacoes.push(nome);
             }
             else {
                 for (let notificador of notificadores) {
@@ -74,7 +74,7 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
                 }
                 if (flag == 0) {
                     notificadores.push(new notificador_1.Notificador(cpf));
-                    notificadores[index].notificacoes.push(nome);
+                    // notificadores[index].notificacoes.push(nome);
                     console.log("Não tava criado");
                 }
             }
@@ -419,7 +419,7 @@ servidor.post('/convidar_aluno', (req, res) => {
                 for (let notificador of notificadores) {
                     if (notificador.Cpf_user == usuario_convidado.Cpf) {
                         console.log("Achei aluno: " + usuario_convidado.Nome);
-                        let msg = "Olá, " + usuario_convidado.Nome + "! Você foi convidado para participar da turma " + turma_sessao.Nome + ".";
+                        let msg = "Você foi convidado por " + usuario_sessao.Nome + " para participar da turma " + turma_sessao.Nome + ".";
                         notificadores[i].Notificacoes.push(msg);
                         break;
                     }
@@ -429,7 +429,7 @@ servidor.post('/convidar_aluno', (req, res) => {
                 for (let notificador of notificadores) {
                     if (notificador.Cpf_user == usuario_sessao.Cpf) {
                         console.log("Achei professor: " + usuario_sessao.Nome);
-                        let msg = "Seu convite para " + usuario_convidado.Email + " está pendente!";
+                        let msg = "Seu convite para " + usuario_convidado.Nome + " está pendente!";
                         notificadores[i].Notificacoes.push(msg);
                         break;
                     }
@@ -453,6 +453,7 @@ servidor.post('/atualiza_convite', (req, res) => {
     let flag = req.body.flag; //boolean
     let index_turmas = 0;
     let index_aluno = 0;
+    let prof = null;
     for (let turma of turmas) {
         if (codigo == turma.Codigo) {
             for (let aluno of turma.Lista_de_alunos) {
@@ -473,6 +474,29 @@ servidor.post('/atualiza_convite', (req, res) => {
     else {
         if (flag) {
             turmas[index_turmas].Lista_de_alunos[index_aluno][1] = "Aceito";
+            prof = turmas[index_turmas].Professor_responsavel;
+            let i = 0;
+            for (let notificador of notificadores) {
+                if (notificador.Cpf_user == usuario_sessao.Cpf) {
+                    console.log("Achei aluno: " + usuario_sessao.Nome);
+                    let msg = "Você foi convidado por " + prof.Nome + " para participar da turma " + turmas[index_turmas].Nome + ".";
+                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj !== msg);
+                    break;
+                }
+                i += 1;
+            }
+            i = 0;
+            for (let notificador of notificadores) {
+                if (notificador.Cpf_user == prof.Cpf) {
+                    console.log("Achei professor: " + prof.Nome);
+                    let msg = "Seu convite para " + usuario_sessao.Nome + " foi aceito!";
+                    notificadores[i].Notificacoes.push(msg);
+                    msg = "Seu convite para " + usuario_sessao.Nome + " está pendente!";
+                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj !== msg);
+                    break;
+                }
+                i += 1;
+            }
             res.send({
                 success: 'Convite aceito com sucesso!',
             });
@@ -515,9 +539,6 @@ servidor.get('/notificacoes', (req, res) => {
     else {
         res.send([]);
     }
-});
-servidor.get('/logado', (req, res) => {
-    res.send(usuario_sessao);
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');
