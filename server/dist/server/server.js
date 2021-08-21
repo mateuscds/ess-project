@@ -176,6 +176,15 @@ servidor.post('/atualiza_cadastro', (req, res) => {
                 });
             }
             else {
+                let key = -1;
+                let i = 0;
+                for (let notif of notificadores) {
+                    if (notif.Cpf_user == usuarios[index].Cpf) {
+                        key = i;
+                    }
+                    i += 1;
+                }
+                notificadores[key].Cpf_user = usuario_modificado.Cpf;
                 usuarios[index] = usuario_modificado;
                 usuario_sessao = usuario_modificado;
                 res.send({
@@ -212,6 +221,7 @@ servidor.post('/deleta', (req, res) => {
     }
     usuarios = usuarios.filter(obj => obj !== usuario_atual);
     usuario_sessao = null;
+    notificadores = notificadores.filter(obj => obj.Cpf_user != usuario_atual.Cpf);
     res.send({
         success: 'Usuario deletado do sistema com sucesso!',
     });
@@ -527,12 +537,13 @@ servidor.get('/notificacoes', (req, res) => {
     let key = -1;
     let index = 0;
     if (usuario_sessao != null) {
-        for (let usuario of usuarios) {
-            if (usuario.Cpf == usuario_sessao.Cpf) {
+        for (let notif of notificadores) {
+            if (notif.Cpf_user == usuario_sessao.Cpf) {
                 key = index;
             }
             index += 1;
         }
+        console.log("Index -> " + key);
         console.log(notificadores[key]);
         res.send((notificadores[key]));
     }
