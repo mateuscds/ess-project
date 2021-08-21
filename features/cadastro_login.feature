@@ -67,10 +67,10 @@ Scenario: cadastro mal sucedido com CPF já cadastrado.
     When: o usuário preenche o CPF "999.888.777-66", o NOME "Gabriel", o E-MAIL "gabriel@ufpe.br" e a SENHA "9876"
     Then: a memória do sistema não é alterada e um novo usuário duplicado não é criado
 
-Scenario: cadastro mal sucedido com CPF já cadastrado.
+Scenario: cadastro mal sucedido com E-MAIL já cadastrado.
     Given: dado que o usuário esteja na página de cadastro do sistema
-    And: exista um usuário cadastrado na memória do sistema com o CPF "999.888.777-66"
-    When: o usuário preenche o CPF "999.888.777-66", o NOME "Gabriel", o E-MAIL "gabriel@ufpe.br" e a SENHA "9876"
+    And: exista um usuário cadastrado na memória do sistema com o E-MAIL "rafael@ufpe.br"
+    When: o usuário preenche o CPF "555.777.888-99", o NOME "Rafael", o E-MAIL "rafael@ufpe.br" e a SENHA "1212"
     Then: a memória do sistema não é alterada e um novo usuário duplicado não é criado
 
 Scenario: cadastro mal sucedido por falta de CPF.

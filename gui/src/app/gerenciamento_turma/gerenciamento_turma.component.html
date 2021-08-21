@@ -34,10 +34,10 @@
         <div class="novosAlunosInputs">
             <div class="EmailBlock">
                 <label>Email: </label>
-                <input #email_box type="text"/>
+                <input id="email_aluno" #email_box type="text"/>
             </div>
 
-            <button (click)="convidar(email_box.value)"> Convidar </button>
+            <button id="convida_aluno" (click)="convidar(email_box.value)"> Convidar </button>
         </div>
 
         <h3 *ngIf='turma.Lista_de_alunos.length === 0'>Nenhum aluno cadastrado nessa turma.</h3>
