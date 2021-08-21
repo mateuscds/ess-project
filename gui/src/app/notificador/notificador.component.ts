@@ -47,7 +47,7 @@ export class NotificadorComponent {
                         this.nome_user = usuario["nome"];
                         this.alguem_logado = true;
                         if (usuario.hasOwnProperty('mascara')){
-                            this.link = "/";
+                            this.link = "/minhas_turmas";
                         } else {
                             this.link = "/gerenciamento_turma"
                         }
