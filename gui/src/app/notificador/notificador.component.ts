@@ -21,6 +21,7 @@ export class NotificadorComponent {
 
     cpf_user:string = "";
     nome_user:string = "";
+    link:string = "";
 
     constructor(private notificadorservice: NotificadorService) { 
         for (let i = 0; i < 5; i++) {  
@@ -45,6 +46,11 @@ export class NotificadorComponent {
                         this.cpf_user = usuario["cpf"];
                         this.nome_user = usuario["nome"];
                         this.alguem_logado = true;
+                        if (usuario.hasOwnProperty('mascara')){
+                            this.link = "/";
+                        } else {
+                            this.link = "/gerenciamento_turma"
+                        }
                     } else {
                         this.alguem_logado = false;
                         this.notificador = new Notificador("");

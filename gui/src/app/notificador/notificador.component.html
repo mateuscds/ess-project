@@ -1,11 +1,12 @@
 <section class="notificadorView">
-    
     <div *ngIf='alguem_logado'>
         <div class="notificacoes">
             <div class="notifcacao" [ngClass]="notificador" name="notifica" id="notifica"><h1 class="notificadorTitle">Notificações - {{nome_user}}</h1></div>
-            <tr *ngFor="let a of notificador.notificacoes" name="notiflist">
-            <td><li>{{a}}</li></td> 
-            </tr>
+            <div *ngFor="let a of notificador.notificacoes" name="notiflist">
+                <div class="notifcacao" [ngClass]="notificador" name="notifica" id="notifica">
+                    <a mat-button routerLink = {{link}} ><li>{{a}}</li></a>
+                </div>
+            </div>
         </div>
         <button (click)="atualizarNotificacoes()"> Atualizar </button>
         <button (click)="limparNotificacoes()"> Limpar </button>
