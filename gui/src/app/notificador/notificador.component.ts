@@ -56,6 +56,16 @@ export class NotificadorComponent {
     }
 
 
+    limparNotificacoes(): void{
+        for (let i = 0; i < 5; i++) {
+            this.notificadorservice.limpar().subscribe();
+        }
+
+        this.atualizarNotificacoes();
+        
+    }
+
+
     atualizarNotificacoes(): void{
         this.alguemLogado();
         for (let i = 0; i < 5; i++) {  

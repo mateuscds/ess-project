@@ -30,5 +30,14 @@ export class NotificadorService {
             retry(2)
         );
     }
+
+
+    limpar(): Observable<Usuario>{
+        return this.http.get<any>(this.URL + '/limpar').pipe(
+            retry(2)
+        );
+    }
+
+
 }
 

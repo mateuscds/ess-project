@@ -551,6 +551,22 @@ servidor.get('/notificacoes', (req, res) => {
         res.send([]);
     }
 });
+servidor.get('/limpar', (req, res) => {
+    let key = -1;
+    let index = 0;
+    if (usuario_sessao != null) {
+        for (let notif of notificadores) {
+            if (notif.Cpf_user == usuario_sessao.Cpf) {
+                key = index;
+            }
+            index += 1;
+        }
+        notificadores[key].Notificacoes = [];
+    }
+    else {
+        console.log("Usuário sessão nulo");
+    }
+});
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
