@@ -5,6 +5,14 @@ import { Professor } from '../../../../common/professor';
 
 import { MinhaContaService } from './minha_conta.service';
 
+function ehAluno(objeto: Usuario) { 
+    if(objeto.hasOwnProperty('mascara')){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 @Component({
     selector: 'minha_conta',
@@ -22,7 +30,7 @@ import { MinhaContaService } from './minha_conta.service';
         this.minhaContaService.meu_usuario().subscribe(
             (meu_user) => { 
                 if(meu_user != null){
-                    if(meu_user.hasOwnProperty('mascara')){
+                    if(ehAluno(meu_user)){
                         this.meu_usuario = new Aluno(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
                         this.controla_notificacao(true, true, "");
                     }
@@ -74,7 +82,7 @@ import { MinhaContaService } from './minha_conta.service';
         this.minhaContaService.meu_usuario().subscribe(
             (meu_user) => { 
                 if(meu_user != null){
-                    if(meu_user.hasOwnProperty('mascara')){
+                    if(ehAluno(meu_user)){
                         this.meu_usuario = new Aluno(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
                     }
                     else{

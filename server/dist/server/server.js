@@ -5,6 +5,85 @@ const express = require("express");
 const aluno_1 = require("../common/aluno");
 const professor_1 = require("../common/professor");
 const turma_1 = require("../common/turma");
+function ehAluno(objeto) {
+    if (objeto.hasOwnProperty('mascara')) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function existeUsuario(objeto) {
+    let existe = false;
+    for (let i of usuarios) {
+        if (i.Cpf == objeto.Cpf || i.Email == objeto.Email) {
+            existe = true;
+        }
+    }
+    return existe;
+}
+function existeUsuarioCadastrado(email, senha) {
+    let existe = false;
+    let usuario_sessao_aux = null;
+    for (let i of usuarios) {
+        if (i.Email == email && i.Senha == senha) {
+            existe = true;
+            usuario_sessao_aux = i;
+        }
+    }
+    return [existe, usuario_sessao_aux];
+}
+function encontraIndexUsuario() {
+    let index = 0;
+    for (let i of usuarios) {
+        if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
+            break;
+        }
+        index += 1;
+    }
+    return index;
+}
+function existeUsuarioDiferente(objeto, index) {
+    let existe = false;
+    let index_aux = 0;
+    for (let i of usuarios) {
+        if ((i.Cpf == objeto.Cpf || i.Email == objeto.Email) && index_aux != index) {
+            existe = true;
+        }
+        index_aux += 1;
+    }
+    return existe;
+}
+function deletaUsuario() {
+    let usuario_atual;
+    for (let i of usuarios) {
+        if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
+            usuario_atual = i;
+            break;
+        }
+    }
+    usuarios = usuarios.filter(obj => obj !== usuario_atual);
+}
+function deletaUsuarioDasTurmas() {
+    let objeto_auxiliar = null;
+    let index = 0;
+    if (ehAluno(usuario_sessao)) {
+        for (let t of turmas) {
+            let lista_de_alunos = t.Lista_de_alunos;
+            for (let a of lista_de_alunos) {
+                let student = a[0];
+                if (student.Cpf == usuario_sessao.Cpf) {
+                    objeto_auxiliar = a;
+                    turmas[index].Lista_de_alunos = turmas[index].Lista_de_alunos.filter(obj => obj !== objeto_auxiliar);
+                    console.log('Lista de alunos após deletar');
+                    console.log(turmas[index].Lista_de_alunos);
+                    break;
+                }
+            }
+            index += 1;
+        }
+    }
+}
 var servidor = express();
 exports.servidor = servidor;
 var allowCrossDomain = function (req, res, next) {
@@ -26,7 +105,7 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
     let email = req.body.email;
     let senha = req.body.senha;
     let usuario;
-    if (req.body.hasOwnProperty('mascara')) {
+    if (ehAluno(req.body)) {
         usuario = new aluno_1.Aluno(cpf, nome, email, senha);
     }
     else {
@@ -42,21 +121,13 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
         });
     }
     else {
-        let existe = false;
-        for (let i of usuarios) {
-            if (i.Cpf == usuario.Cpf || i.Email == usuario.Email) {
-                existe = true;
-            }
-        }
-        if (existe) {
+        if (existeUsuario(usuario)) {
             res.send({
                 failure: 'Um usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
             });
         }
         else {
-            //console.log(usuarios);
             usuarios.push(usuario);
-            //console.log(usuarios);
             res.send({
                 success: 'Usuario cadastrado com sucesso!',
             });
@@ -80,13 +151,9 @@ servidor.post('/login', (req, res) => {
         });
     }
     else {
-        let existe = false;
-        for (let i of usuarios) {
-            if (i.Email == email && i.Senha == senha) {
-                existe = true;
-                usuario_sessao = i;
-            }
-        }
+        let resposta = existeUsuarioCadastrado(email, senha);
+        let existe = resposta[0];
+        usuario_sessao = resposta[1];
         if (existe) {
             res.send({
                 success: 'Login realizado com sucesso!',
@@ -107,7 +174,7 @@ servidor.post('/atualiza_cadastro', (req, res) => {
         let email = req.body.email;
         let senha = req.body.senha;
         let usuario_modificado;
-        if (usuario_sessao.hasOwnProperty('mascara')) {
+        if (ehAluno(usuario_sessao)) {
             usuario_modificado = new aluno_1.Aluno(cpf, nome, email, senha);
         }
         else {
@@ -123,22 +190,8 @@ servidor.post('/atualiza_cadastro', (req, res) => {
             });
         }
         else {
-            let index = 0;
-            for (let i of usuarios) {
-                if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
-                    break;
-                }
-                index += 1;
-            }
-            let existe = false;
-            let index_aux = 0;
-            for (let i of usuarios) {
-                if ((i.Cpf == usuario_modificado.Cpf || i.Email == usuario_modificado.Email) && index_aux != index) {
-                    existe = true;
-                }
-                index_aux += 1;
-            }
-            if (existe) {
+            let index = encontraIndexUsuario();
+            if (existeUsuarioDiferente(usuario_modificado, index)) {
                 res.send({
                     failure: 'Um outro usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
                 });
@@ -172,33 +225,9 @@ servidor.post('/desloga', (req, res) => {
 });
 servidor.post('/deleta', (req, res) => {
     if (usuario_sessao != null) {
-        let usuario_atual;
-        for (let i of usuarios) {
-            if (i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email) {
-                usuario_atual = i;
-                break;
-            }
-        }
-        usuarios = usuarios.filter(obj => obj !== usuario_atual);
+        deletaUsuario();
         //removendo aluno deletado das turmas que ele pertence
-        let objeto_auxiliar = null;
-        let index = 0;
-        if (usuario_sessao.hasOwnProperty('mascara')) {
-            for (let t of turmas) {
-                let lista_de_alunos = t.Lista_de_alunos;
-                for (let a of lista_de_alunos) {
-                    let student = a[0];
-                    if (student.Cpf == usuario_sessao.Cpf) {
-                        objeto_auxiliar = a;
-                        turmas[index].Lista_de_alunos = turmas[index].Lista_de_alunos.filter(obj => obj !== objeto_auxiliar);
-                        console.log('Lista de alunos após deletar');
-                        console.log(turmas[index].Lista_de_alunos);
-                        break;
-                    }
-                }
-                index += 1;
-            }
-        }
+        deletaUsuarioDasTurmas();
         usuario_sessao = null;
         res.send({
             success: 'Usuario deletado do sistema com sucesso!',
