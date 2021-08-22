@@ -4,9 +4,9 @@ exports.Aluno = void 0;
 const usuario_1 = require("./usuario");
 function calculaMascara(cpf) {
     var parte1 = cpf.substring(0, 3);
-    var parte2 = cpf.substring(3, 6);
-    var parte3 = cpf.substring(6, 9);
-    var parte4 = cpf.substring(9, 11);
+    var parte2 = cpf.substring(4, 7);
+    var parte3 = cpf.substring(8, 11);
+    var parte4 = cpf.substring(12, 14);
     var parte1_numero = 4 * Number(parte1);
     var parte2_numero = 3 * Number(parte2);
     var parte3_numero = 2 * Number(parte3);

@@ -1,0 +1,5 @@
+gui/node_modules/
+server/dist/
+server/node_modules/
+tests-acceptance/compiledCode/
+tests-acceptance/node_modules/

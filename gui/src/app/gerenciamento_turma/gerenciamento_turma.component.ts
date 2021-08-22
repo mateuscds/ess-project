@@ -117,7 +117,12 @@ export class GerenciamentoTurmaComponent {
             (minha_turma) => { 
                 if(minha_turma != null){
 
+                    console.log("Minha turma: ", minha_turma);
+
                     Object.assign(this.turma, minha_turma);
+
+                    console.log(this.turma);
+                    console.log(this.turma.Lista_de_alunos);
                 }
             },
         );

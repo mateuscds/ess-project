@@ -6,6 +6,15 @@ import { Aluno } from '../../../../common/aluno';
 import { MinhasTurmasService } from './minhas_turmas.service';
 import { Router } from '@angular/router';
 
+function ehAluno(objeto: Usuario) { 
+    if(objeto.hasOwnProperty('mascara')){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 @Component({
     selector: 'minhas_turmas',
     templateUrl: './minhas_turmas.component.html',
@@ -47,7 +56,7 @@ export class MinhasTurmasComponent {
         this.minhasTurmasService.meu_usuario().subscribe(
             (meu_user) => { 
                 if(meu_user != null){
-                    if(meu_user.hasOwnProperty('mascara')){
+                    if(ehAluno(meu_user)){
                         this.meu_usuario = new Aluno(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
                         this.controla_notificacao(true, true, "");
 

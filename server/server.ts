@@ -1,11 +1,261 @@
 import express = require('express');
-//import bodyParser = require("body-parser");
 
 import { Usuario } from '../common/usuario';
 import { Aluno } from '../common/aluno';
 import { Professor } from '../common/professor';
 import { Cadastro } from './cadastro';
 import { Turma } from '../common/turma';
+
+function ehAluno(objeto: Usuario) { 
+    if(objeto.hasOwnProperty('mascara')){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function existeUsuario(objeto: Usuario) { 
+    let existe = false;
+    for (let i of usuarios){
+        if(i.Cpf == objeto.Cpf || i.Email == objeto.Email){
+            existe = true;
+        }
+    }
+    return existe;
+}
+
+function existeUsuarioCadastrado(email: string, senha: string) { 
+    let existe = false;
+    let usuario_sessao_aux = null;
+    for (let i of usuarios){
+        if(i.Email == email && i.Senha == senha){
+            existe = true;
+            usuario_sessao_aux = i;
+        }
+    }
+    return [existe, usuario_sessao_aux];
+}
+
+function encontraIndexUsuario() { 
+    let index = 0;
+    for (let i of usuarios){
+        if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
+            break;
+        }
+        index += 1;
+    }
+    return index;
+}
+
+function existeUsuarioDiferente(objeto: Usuario, index: number) { 
+    let existe = false;
+    let index_aux = 0;
+    for (let i of usuarios){
+        if((i.Cpf == objeto.Cpf || i.Email == objeto.Email) && index_aux != index){
+            existe = true;
+        }
+        index_aux += 1;
+    }
+    return existe;
+}
+
+function deletaUsuario() { 
+    let usuario_atual;
+    for (let i of usuarios){
+        if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
+            usuario_atual = i;
+            break;
+        }
+    }
+    usuarios = usuarios.filter(obj => obj !== usuario_atual);
+}
+
+function deletaUsuarioDasTurmas() { 
+    let objeto_auxiliar = null;
+    let index = 0;
+    if(ehAluno(usuario_sessao)){
+        for (let t of turmas){
+
+            let lista_de_alunos = t.Lista_de_alunos;
+            for (let a of lista_de_alunos){
+
+                let student = a[0];
+                if (student.Cpf == usuario_sessao.Cpf){
+                    objeto_auxiliar = a;
+                    turmas[index].Lista_de_alunos = turmas[index].Lista_de_alunos.filter(obj => obj !== objeto_auxiliar);
+                    console.log('Lista de alunos após deletar');
+                    console.log(turmas[index].Lista_de_alunos);
+                    break;
+                }
+            }
+            index += 1;
+        }
+    }
+}
+
+function existeTurma(codigo: string){
+
+    let existe = false;
+    for (let i of turmas){
+        if(i.Codigo == codigo){
+            existe = true;
+        }
+    }
+
+    return existe;
+}
+
+function turmasAluno(){
+
+    let turmas_aux = [];
+    let status_list = [];
+
+    for (let i of turmas){
+
+        let student_list = i.Lista_de_alunos;
+
+        for (let j of student_list){
+
+            if(j[0].Cpf == usuario_sessao.Cpf){
+                turmas_aux.push(i);
+                status_list.push(j[1]);
+            }
+        }
+    } 
+
+    return [turmas_aux, status_list];
+}
+
+function turmasProfessor(){
+
+    let turmas_aux = [];
+
+    for (let i of turmas){
+        if(usuario_sessao.Cpf == i.Professor_responsavel.Cpf){
+            turmas_aux.push(i);
+        }
+    }
+
+    return turmas_aux;
+}
+
+
+function retornaTurma(codigo: string){
+
+    let turma_aux = null;
+
+    for (let i of turmas){
+
+        if(codigo == i.Codigo){
+            turma_aux = i;
+            break;
+        }
+    }
+
+    return turma_aux;
+}
+
+
+function retornaIndexTurma(){
+
+    let index = 0;
+    for (let i of turmas){
+        if(i.Codigo == turma_sessao.Codigo){
+            break;
+        }
+        index += 1;
+    }
+
+    return index;
+}
+
+
+function existeTurmaDiferente(turma_modificada: Turma, index: number){
+
+    let existe = false;
+    let index_aux = 0;
+
+    for (let i of turmas){
+        if((i.Codigo == turma_modificada.Codigo) && index_aux != index){
+            existe = true;
+        }
+        index_aux += 1;
+    }
+
+    return existe;
+}
+
+
+function retornaAlunoConvidado(email: string){
+
+    let usuario_convidado = null;
+    for (let i of usuarios){
+        if(i.Email == email){
+            usuario_convidado = i;
+            break;
+        }
+    }
+
+    return usuario_convidado;
+}
+
+
+function existeConvidado(list_convidados: [Usuario, string][], email: string){
+
+    let exists = false;
+
+    for (let i of list_convidados){
+        if(i[0].Email == email){
+            exists = true;
+            break;
+        }
+    }
+    return exists;
+}
+
+
+function procuraIndexAlunoConvidado(codigo: string){
+
+    let index_turmas = 0;
+    let index_aluno = 0;
+
+    for (let turma of turmas){
+
+        if(codigo == turma.Codigo){
+
+            for (let aluno of turma.Lista_de_alunos){
+
+                if(aluno[0].Cpf == usuario_sessao.Cpf){
+                    break;
+                }
+
+                index_aluno += 1;
+            }
+            break;
+        }
+
+        index_turmas += 1;
+    }
+
+    return [index_turmas, index_aluno];
+}
+
+
+function atualizaListaAlunos(index_turmas: number){
+
+    let lista_alunos_aux = [];
+
+    for (let aluno of turmas[index_turmas].Lista_de_alunos){
+
+        if(aluno[0].Cpf != usuario_sessao.Cpf){
+            lista_alunos_aux.push(aluno);
+        }
+    }
+
+    turmas[index_turmas].Lista_de_alunos = lista_alunos_aux;
+}
+
 
 var servidor = express();
 
@@ -32,7 +282,7 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
     let senha = req.body.senha;
 
     let usuario;
-    if(req.body.hasOwnProperty('mascara')){
+    if(ehAluno(req.body)){
         usuario = new Aluno(cpf, nome, email, senha);
     }
     else{
@@ -50,22 +300,14 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
         })
     }
     else{
-        let existe = false;
-        for (let i of usuarios){
-            if(i.Cpf == usuario.Cpf || i.Email == usuario.Email){
-                existe = true;
-            }
-        }
 
-        if(existe){
+        if(existeUsuario(usuario)){
             res.send({
                 failure: 'Um usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
             })
         }
         else{
-            //console.log(usuarios);
             usuarios.push(usuario);
-            //console.log(usuarios);
 
             res.send({
                 success: 'Usuario cadastrado com sucesso!',
@@ -94,13 +336,10 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
         })
     }
     else{
-        let existe = false;
-        for (let i of usuarios){
-            if(i.Email == email && i.Senha == senha){
-                existe = true;
-                usuario_sessao = i;
-            }
-        }
+
+        let resposta = existeUsuarioCadastrado(email, senha);
+        let existe = resposta[0];
+        usuario_sessao = resposta[1];
 
         if(existe){
             res.send({
@@ -124,7 +363,7 @@ servidor.post('/atualiza_cadastro', (req: express.Request, res: express.Response
         let senha = req.body.senha;
 
         let usuario_modificado;
-        if(usuario_sessao.hasOwnProperty('mascara')){
+        if(ehAluno(usuario_sessao)){
             usuario_modificado = new Aluno(cpf, nome, email, senha);
         }
         else{
@@ -142,24 +381,9 @@ servidor.post('/atualiza_cadastro', (req: express.Request, res: express.Response
             })
         }
         else{
-            let index = 0;
-            for (let i of usuarios){
-                if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
-                    break;
-                }
-                index += 1;
-            }
-
-            let existe = false;
-            let index_aux = 0;
-            for (let i of usuarios){
-                if((i.Cpf == usuario_modificado.Cpf || i.Email == usuario_modificado.Email) && index_aux != index){
-                    existe = true;
-                }
-                index_aux += 1;
-            }
-
-            if(existe){
+            let index = encontraIndexUsuario();
+            
+            if(existeUsuarioDiferente(usuario_modificado, index)){
                 res.send({
                     failure: 'Um outro usuario com esse CPF ou esse EMAIL ja existe na base de dados!',
                 })
@@ -201,14 +425,12 @@ servidor.post('/desloga', (req: express.Request, res: express.Response) => {
 servidor.post('/deleta', (req: express.Request, res: express.Response) => {
 
     if(usuario_sessao != null){
-        let usuario_atual;
-        for (let i of usuarios){
-            if(i.Cpf == usuario_sessao.Cpf && i.Email == usuario_sessao.Email){
-                usuario_atual = i;
-                break;
-            }
-        }
-        usuarios = usuarios.filter(obj => obj !== usuario_atual);
+        
+        deletaUsuario();
+        
+        //removendo aluno deletado das turmas que ele pertence
+        deletaUsuarioDasTurmas();
+
         usuario_sessao = null;
 
         res.send({
@@ -237,7 +459,7 @@ servidor.post('/criar_turma', (req: express.Request, res: express.Response) => {
         })
     }
     else{
-        if(usuario_sessao.hasOwnProperty('mascara')){
+        if(ehAluno(usuario_sessao)){
             res.send({
                 failure: 'Apenas professores podem realizar a criação de turmas!',
             })
@@ -256,14 +478,7 @@ servidor.post('/criar_turma', (req: express.Request, res: express.Response) => {
             }
             else{
 
-                let existe = false;
-                for (let i of turmas){
-                    if(i.Codigo == codigo){
-                        existe = true;
-                    }
-                }
-
-                if(existe){
+                if(existeTurma(codigo)){
                     res.send({
                         failure: 'Já existe uma turma cadastrada com esse código!',
                     })
@@ -293,27 +508,15 @@ servidor.get('/minhas_turmas', (req: express.Request, res: express.Response) => 
     let turmas_aux = [];
     let status_list = [];
 
-    if(usuario_sessao.hasOwnProperty('mascara')){
-
-        for (let i of turmas){
-
-            let student_list = i.Lista_de_alunos;
-
-            for (let j of student_list){
-
-                if(j[0].Cpf == usuario_sessao.Cpf){
-                    turmas_aux.push(i);
-                    status_list.push(j[1]);
-                }
-            }
-        }        
+    if(ehAluno(usuario_sessao)){   
+        
+        let res = turmasAluno();
+        turmas_aux = res[0];
+        status_list = res[1];
     }
     else{
-        for (let i of turmas){
-            if(usuario_sessao.Cpf == i.Professor_responsavel.Cpf){
-                turmas_aux.push(i);
-            }
-        }
+
+        turmas_aux = turmasProfessor();
     }
 
     res.send([turmas_aux, status_list]);
@@ -331,13 +534,7 @@ servidor.post('/envia_turma', (req: express.Request, res: express.Response) => {
 
     let turma_aux = null;
 
-    for (let i of turmas){
-
-        if(req.body.codigo == i.Codigo){
-            turma_aux = i;
-            break;
-        }
-    }
+    turma_aux = retornaTurma(req.body.codigo);
 
     turma_sessao = turma_aux;
 
@@ -370,27 +567,11 @@ servidor.post('/atualiza_turma', (req: express.Request, res: express.Response) =
             })
         }
         else{
-            let index = 0;
-            for (let i of turmas){
-                if(i.Codigo == turma_sessao.Codigo){
-                    break;
-                }
-                index += 1;
-            }
 
-            let existe = false;
-            let index_aux = 0;
-
+            let index = retornaIndexTurma();
             turma_modificada = new Turma(nome, codigo, semestre, usuario_sessao);
 
-            for (let i of turmas){
-                if((i.Codigo == turma_modificada.Codigo) && index_aux != index){
-                    existe = true;
-                }
-                index_aux += 1;
-            }
-
-            if(existe){
+            if(existeTurmaDiferente(turma_modificada, index)){
                 res.send({
                     failure: 'Uma outra turma com esse código ja existe na base de dados!',
                 })
@@ -412,13 +593,8 @@ servidor.post('/atualiza_turma', (req: express.Request, res: express.Response) =
 
 servidor.post('/deleta_turma', (req: express.Request, res: express.Response) => {
 
-    let turma_atual;
-    for (let i of turmas){
-        if(i.Codigo == turma_sessao.Codigo){
-            turma_atual = i;
-            break;
-        }
-    }
+    let turma_atual = retornaTurma(turma_sessao.Codigo);
+
     turmas = turmas.filter(obj => obj !== turma_atual);
     turma_sessao = null;
 
@@ -443,13 +619,7 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
     }
     else{
 
-        let usuario_convidado = null;
-        for (let i of usuarios){
-            if(i.Email == email){
-                usuario_convidado = i;
-                break;
-            }
-        }
+        let usuario_convidado = retornaAlunoConvidado(email);
 
         if(usuario_convidado == null){
             res.send({
@@ -458,25 +628,11 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
         }
         else{
 
-            let index = 0;
-            for (let i of turmas){
-                if(i.Codigo == turma_sessao.Codigo){
-                    break;
-                }
-                index += 1;
-            }
+            let index = retornaIndexTurma();
 
             let list_convidados = turmas[index].Lista_de_alunos;
-            let exists = false;
 
-            for (let i of list_convidados){
-                if(i[0].Email == email){
-                    exists = true;
-                    break;
-                }
-            }
-
-            if(exists){
+            if(existeConvidado(list_convidados, email)){
                 res.send({
                     failure: 'O usuario já foi convidado!',
                 })
@@ -496,6 +652,8 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
         console.log(turma);
         console.log(turma.Lista_de_alunos);
     }
+
+    console.log(turma_sessao);
 })
 
 
@@ -505,26 +663,9 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
     let codigo = req.body.codigo;
     let flag = req.body.flag; //boolean
 
-    let index_turmas = 0;
-    let index_aluno = 0;
-
-    for (let turma of turmas){
-
-        if(codigo == turma.Codigo){
-
-            for (let aluno of turma.Lista_de_alunos){
-
-                if(aluno[0].Cpf == usuario_sessao.Cpf){
-                    break;
-                }
-
-                index_aluno += 1;
-            }
-            break;
-        }
-
-        index_turmas += 1;
-    }
+    let resposta = procuraIndexAlunoConvidado(codigo);
+    let index_turmas = resposta[0];
+    let index_aluno = resposta[1];
 
     if(index_turmas == null || index_aluno == null){
 
@@ -543,16 +684,7 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
         }
         else{
 
-            let lista_alunos_aux = [];
-
-            for (let aluno of turmas[index_turmas].Lista_de_alunos){
-
-                if(aluno[0].Cpf != usuario_sessao.Cpf){
-                    lista_alunos_aux.push(aluno);
-                }
-            }
-
-            turmas[index_turmas].Lista_de_alunos = lista_alunos_aux;
+            atualizaListaAlunos(index_turmas);
 
             res.send({
                 success: 'Convite rejeitado com sucesso!',
@@ -573,4 +705,3 @@ function closeServer(): void {
 }
   
 export { servidor, closeServer }
-  

@@ -5,13 +5,20 @@ import { Professor } from '../../../../common/professor';
 import { CriarTurmaService } from './criar_turma.service';
 import { Router } from '@angular/router';
 
+function ehAluno(objeto: Usuario) { 
+    if(objeto.hasOwnProperty('mascara')){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 @Component({
     selector: 'criar_turma',
     templateUrl: './criar_turma.component.html',
     styleUrls: ['./criar_turma.component.css']
   })
-
-
   
 export class CriarTurmaComponent {
 
@@ -23,7 +30,7 @@ export class CriarTurmaComponent {
         this.criarTurmaService.professor_responsavel().subscribe(
             (meu_user) => { 
                 if(meu_user != null){
-                    if(meu_user.hasOwnProperty('mascara')){
+                    if(ehAluno(meu_user)){
                         this.controla_notificacao(true, true, "Apenas professores podem fazer a criação de turmas!");
                     }
                     else{
