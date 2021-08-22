@@ -180,6 +180,25 @@ servidor.post('/deleta', (req, res) => {
             }
         }
         usuarios = usuarios.filter(obj => obj !== usuario_atual);
+        //removendo aluno deletado das turmas que ele pertence
+        let objeto_auxiliar = null;
+        let index = 0;
+        if (usuario_sessao.hasOwnProperty('mascara')) {
+            for (let t of turmas) {
+                let lista_de_alunos = t.Lista_de_alunos;
+                for (let a of lista_de_alunos) {
+                    let student = a[0];
+                    if (student.Cpf == usuario_sessao.Cpf) {
+                        objeto_auxiliar = a;
+                        turmas[index].Lista_de_alunos = turmas[index].Lista_de_alunos.filter(obj => obj !== objeto_auxiliar);
+                        console.log('Lista de alunos após deletar');
+                        console.log(turmas[index].Lista_de_alunos);
+                        break;
+                    }
+                }
+                index += 1;
+            }
+        }
         usuario_sessao = null;
         res.send({
             success: 'Usuario deletado do sistema com sucesso!',
