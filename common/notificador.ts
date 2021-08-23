@@ -1,5 +1,3 @@
-import { Notificacao } from './notificacao';
-
 export class Notificador{
 
 	notificacoes: Array<string>; 

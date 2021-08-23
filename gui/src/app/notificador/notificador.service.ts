@@ -3,7 +3,6 @@ import { Professor } from '../../../../common/professor';
 import { Aluno } from '../../../../common/aluno';
 import { Turma } from '../../../../common/turma';
 import { Notificador } from '../../../../common/notificador'
-import { Notificacao } from '../../../../common/notificacao'
 
 import { Injectable }    from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

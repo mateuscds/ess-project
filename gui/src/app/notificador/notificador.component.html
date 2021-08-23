@@ -1,18 +1,18 @@
 <section class="notificadorView">
     <div *ngIf='alguem_logado'>
         <div class="notificacoes">
-            <div class="notifcacao" [ngClass]="notificador" name="notifica" id="notifica"><h1 class="notificadorTitle">Notificações - {{nome_user}}</h1></div>
+            <div class="notifcacao" [ngClass]="notificador" name="notifLogado" id="notifica"><h1 class="notificadorTitle">Notificações - {{nome_user}}</h1></div>
             <div *ngFor="let a of notificador.notificacoes" name="notiflist">
                 <div class="notifcacao" [ngClass]="notificador" name="notifica" id="notifica">
                     <a mat-button routerLink = {{link}} ><li>{{a}}</li></a>
                 </div>
             </div>
         </div>
-        <button (click)="atualizarNotificacoes()"> Atualizar </button>
-        <button (click)="limparNotificacoes()"> Limpar </button>
+        <button name="atualizarBotaoLogado" (click)="atualizarNotificacoes()"> Atualizar </button>
+        <button name="limparBotao" (click)="limparNotificacoes()"> Limpar </button>
     </div>
     <div *ngIf='!alguem_logado'>
-        <h1 class="notificadorTitle">Notificações</h1>
-        <button (click)="atualizarNotificacoes()"> Atualizar </button>
+        <h1 name="notif" class="notificadorTitle">Notificações</h1>
+        <button name="atualizarBotao" (click)="atualizarNotificacoes()"> Atualizar </button>
     </div>
 </section>

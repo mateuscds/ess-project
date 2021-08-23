@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../../../common/usuario';
 import { Turma } from '../../../../common/turma';
 import { Notificador } from '../../../../common/notificador';
-import { Notificacao } from '../../../../common/notificacao';
 import { NotificadorService } from './notificador.service';
 
 @Component({
