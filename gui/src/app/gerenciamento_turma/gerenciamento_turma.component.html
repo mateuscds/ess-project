@@ -29,26 +29,29 @@
                 <label>Email: </label>
                 <input id="email_aluno" #email_box type="text"/>
             </div>
-
-            <button id="convida_aluno" (click)="convidar(email_box.value)"> Convidar </button>
         </div>
+        <button id="convida_aluno" (click)="convidar(email_box.value)"> Convidar </button>
 
-        <h3 *ngIf='turma.Lista_de_alunos.length === 0'>Nenhum aluno cadastrado nessa turma.</h3>
-        
-        <table style="padding-bottom: 20px;">
-            <tr *ngIf="turma.Lista_de_alunos.length > 0">
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>e-mail</th>
-            <th>Status</th>
-            </tr>
-            <tr *ngFor="let a of turma.Lista_de_alunos" name="alunolist">
-            <td name="nomelist">{{a[0]["nome"]}}</td>
-            <td name="cpflist">{{a[0]["cpf"]}}</td>
-            <td>{{a[0]["email"]}}</td>
-            <td>{{a[1]}}</td>
-            </tr>
-        </table>
+        <div class="alunosList">
+
+            <h3 *ngIf='turma.Lista_de_alunos.length === 0'>Nenhum aluno cadastrado nessa turma.</h3>
+            
+            <table class="listaAlunosConvidados">
+                <tr *ngIf="turma.Lista_de_alunos.length > 0">
+            
+                    <th class="tituloLinha">Nome</th>
+                    <th class="tituloLinha">CPF</th>
+                    <th class="tituloLinha">e-mail</th>
+                    <th class="tituloLinha"> Status</th>
+                </tr>
+                <tr *ngFor="let a of turma.Lista_de_alunos" name="alunolist">
+                <td name="nomelist">{{a[0]["nome"]}}</td>
+                <td name="cpflist">{{a[0]["cpf"]}}</td>
+                <td>{{a[0]["email"]}}</td>
+                <td>{{a[1]}}</td>
+                </tr>
+            </table>
+        </div>
 
         <div class="deleteBlock">
             <label>Voce deseja deletar a sua turma do sistema? </label>

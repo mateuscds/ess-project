@@ -26,7 +26,7 @@ export class GerenciamentoTurmaComponent {
                 if(minha_turma != null){
 
                     Object.assign(this.turma, minha_turma);
-                    this.controla_notificacao(true, true, "");
+                    this.controla_notificacao(false);
                     
                 }
             },
