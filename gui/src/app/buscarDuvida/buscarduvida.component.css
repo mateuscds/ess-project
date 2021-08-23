@@ -1,0 +1,13 @@
+
+.htable {
+    padding-right: 30px;
+}
+
+.padding-table-columns td
+{
+    padding-left: 10px; /* Only right padding*/
+}
+
+.search {
+    min-width: 230px;
+}

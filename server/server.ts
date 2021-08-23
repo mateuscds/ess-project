@@ -6,6 +6,7 @@ import { Aluno } from '../common/aluno';
 import { Professor } from '../common/professor';
 import { Cadastro } from './cadastro';
 import { Turma } from '../common/turma';
+import { Duvida } from '../common/duvida'
 
 var servidor = express();
 
@@ -24,6 +25,13 @@ let usuarios: Usuario[] = [];
 let turmas: Turma[] = [];
 let usuario_sessao = null;
 let turma_sessao = null;
+
+const duvida1 = new Duvida("O que são stakeholders?", true, "Requisitos", "Como que faço isso?")
+const duvida2 = new Duvida("Qual diferença entre requisitos funcionais e não funcionais?", true, "Requisitos", "Como que faço aquilo?")
+const duvida3 = new Duvida("Como realizar testes?", false, "Testes", "Como que faço aquilo lá?")
+
+let duvidas: Duvida[]
+duvidas = [duvida1, duvida2, duvida3]
 
 servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Response) => {
     let cpf = req.body.cpf;
@@ -563,6 +571,10 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
     console.log(turmas[index_turmas].Lista_de_alunos);
 })
 
+
+servidor.get('/duvidas', (req: express.Request, res: express.Response) => {
+    res.send(JSON.stringify(Array.from(duvidas)))
+})
 
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!')

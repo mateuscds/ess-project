@@ -1,0 +1,38 @@
+<section class="buscarDuvidaView">
+    <h1 class="buscarDuvidaTitle">BUSCAR DUVIDA</h1>
+    <table>
+        <tr>
+            <td>
+                <label for="tipoBusca">Buscar Por:</label>
+                <select  name="tipoBusca" id="tipo-busca" [(ngModel)]="typeSearch">
+                    <option value="titulo">Título</option>
+                    <option value="assunto">Assunto</option>
+                </select>
+            </td>
+            <td><input #searchBar type="search" name="searchBar" class="search" [placeholder]="typeSearch === 'titulo' ? 'Insira o título a ser buscado':'Insira o assunto a ser buscado'"/></td>
+            <td><input #bothConcluCheck type="radio" name="conclSelection" class="bothOpt" checked>Concluídas e Não concluídas</td>
+            <td><input #concluidaCheck type="radio" name="conclSelection" class="conclOpt">Concluídas</td>
+            <td><input #naoConcluidaCheck type="radio" name="conclSelection" class="nConclOpt">Não Concluídas</td>
+            <td><button name="buttonSearch"(click)="filtrarDuvidas(searchBar.value, bothConcluCheck.checked, concluidaCheck.checked, 
+                                naoConcluidaCheck.checked)">Buscar</button></td>
+        </tr>
+    </table>
+    <table className="padding-table-columns">
+        <h3 *ngIf="FiltradasDuvidas.length === 0" name="nenhumaduvida"> Nenhuma Dúvida Encontrada </h3>
+        <thead *ngIf="FiltradasDuvidas.length !== 0">
+            <tr>
+                <th class="htable"> Título da Dúvida </th>
+                <th class="htable"> Estado da dúvida </th>
+                <th class="htable"> Assunto da dúvida </th>
+            </tr>
+        </thead>
+        <tbody class="corpo-duvidas">
+            <tr *ngFor="let d of FiltradasDuvidas; let indexOfelement=index;" name="linhaduvida">
+                <td name="titulo-duvida"><a href="" [attr.data-index]="indexOfelement">{{d.titulo}}</a></td>       
+                <td name="status-duvida"><label [attr.data-index]="indexOfelement">{{d.status ? 'Concluída' : 'Não Concluída'}}</label></td>           
+                <td name="assunto-duvida"><label [attr.data-index]="indexOfelement">{{d.assunto}}</label></td>           
+            </tr>
+        </tbody>
+    </table>
+
+</section>
