@@ -60,7 +60,7 @@ export class Buscarduvida implements OnInit{
 
     filtrarDuvidasPeloTitulo(duvidas: Duvida[], filtro: string): Duvida[] {
         duvidas = duvidas.filter(duvida => {
-            return duvida.titulo.includes(filtro)
+            return duvida.titulo.toUpperCase().includes(filtro.toUpperCase())
         })
         return duvidas
     }
