@@ -16,7 +16,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { DuvidaComponent } from './duvida/duvida.component';
 import { ExibirDuvidaComponent } from './exibirDuvida/exibirduvida.component';
 import { ExibirDuvidaService } from './exibirDuvida/exibirduvida.service';
-
+import { PublicarDuvidaComponent } from './publicarDuvida/publicarduvida.component';
+import { PublicarDuvidaService } from './publicarDuvida/publicarduvida.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ExibirDuvidaService } from './exibirDuvida/exibirduvida.service';
     LoginComponent,
     MinhaContaComponent,
     DuvidaComponent,
-    ExibirDuvidaComponent
+    ExibirDuvidaComponent,
+    PublicarDuvidaComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +63,15 @@ import { ExibirDuvidaService } from './exibirDuvida/exibirduvida.service';
         path: 'exibir_duvida',
         component: ExibirDuvidaComponent
       },
+    ]),
+      RouterModule.forRoot([
+        {
+          path: 'publicar_duvida',
+          component: PublicarDuvidaComponent
+        }
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, ExibirDuvidaService],
+  providers: [CadastroService, LoginService, MinhaContaService, ExibirDuvidaService, PublicarDuvidaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

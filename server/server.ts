@@ -229,6 +229,52 @@ servidor.get('/duvidas', (req: express.Request, res: express.Response) => {
     res.send(JSON.stringify(Array.from(duvidas)))
 })
 
+servidor.post('/publicar', (req: express.Request, res: express.Response) => {
+    let titulo = req.body.titulo;
+    let status = req.body.status;
+    let assunto = req.body.assunto;
+    let descricao = req.body.descricao;
+
+    let duvida;
+    duvida = new Duvida(titulo, status, assunto, descricao);
+
+    let nulo = false;
+    if (titulo === '' || status === '' || assunto === '' || descricao === ''){
+        nulo = true;
+    }
+
+    if(nulo){
+        res.send({
+            failure: 'Alguma das entradas esta nula!',
+        })
+    }
+    else{
+        let existe = false;
+        for (let i of duvidas){
+            if(i.titulo == duvida.titulo){
+                existe = true;
+            }
+        }
+
+        if(existe){
+            res.send({
+                failure: 'Uma duvida com esse TITULO ja existe na base de dados!',
+            })
+        }
+        else{
+            //console.log(usuarios);
+            duvidas.push(duvida);
+            console.log(usuarios);
+
+            res.send({
+                success: 'Duvida cadastrada com sucesso!',
+            })
+        }
+        console.log(duvidas);
+    }
+})
+
+
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!')
  })
