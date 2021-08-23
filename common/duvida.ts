@@ -1,11 +1,11 @@
 export class Duvida{
 
-	private titulo : string;
-    private status : string;
-    private assunto: string
-	private descricao : string;
+	titulo : string;
+    status : boolean;
+    assunto: string
+	descricao : string;
 
-	constructor(titulo: string, status: string, assunto: string, descricao: string) {
+	constructor(titulo: string, status: boolean, assunto: string, descricao: string) {
 		this.titulo = titulo;
         this.assunto = assunto;
 		this.status = status;
@@ -20,11 +20,11 @@ export class Duvida{
         this.titulo = titulo;
 	}
 
-    get Status(): string{
+    get Status(): boolean{
 		return this.status;
 	}
 
-	set Status(status: string){
+	set Status(status: boolean){
         this.status = status;
 	}
 

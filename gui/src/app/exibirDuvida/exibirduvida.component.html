@@ -1,0 +1,14 @@
+<section class="exibirrDuvidaView">
+    <h1 class="exibirDuvidaTitle">EXIBIR DUVIDA</h1>
+        <td>Nome</td>
+        <td>Status</td>
+        <td>Assunto</td>
+        <td>Descrição</td>
+        <td *ngIf="ExibidasDuvidas.length === 0"> Nenhuma Dúvida Encontrada </td>
+        <tr *ngFor="let d of ExibidasDuvidas" name="linhaduvida">
+                <td><a href="" name="linhanomeduvida" >{{d.titulo}}</a></td>
+                <td><a href="" name="linhastatusduvida" >{{d.status}}</a></td>
+                <td><a href="" name="linhaassuntoduvida" >{{d.assunto}}</a></td>
+                <td><a href="" name="linhadescricaoduvida" >{{d.descricao}}</a></td>
+        </tr>
+</section>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
@@ -14,6 +14,8 @@ import { MinhaContaComponent } from './minha_conta/minha_conta.component';
 import { MinhaContaService } from './minha_conta/minha_conta.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DuvidaComponent } from './duvida/duvida.component';
+import { ExibirDuvidaComponent } from './exibirDuvida/exibirduvida.component';
+import { ExibirDuvidaService } from './exibirDuvida/exibirduvida.service';
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import { DuvidaComponent } from './duvida/duvida.component';
     LoginComponent,
     MinhaContaComponent,
     DuvidaComponent,
+    ExibirDuvidaComponent
   ],
   imports: [
     BrowserModule,
@@ -52,9 +55,15 @@ import { DuvidaComponent } from './duvida/duvida.component';
         path: 'duvida',
         component: DuvidaComponent
       },
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'exibir_duvida',
+        component: ExibirDuvidaComponent
+      },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService],
+  providers: [CadastroService, LoginService, MinhaContaService, ExibirDuvidaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
