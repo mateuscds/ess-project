@@ -1,0 +1,87 @@
+.turmaView {
+    margin: auto;
+    width: 40%;
+    border: 2px solid grey;
+    padding: 10px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.turmaTitle{
+    margin-top: -2px;
+    text-align: center;
+}
+
+.turmaContainer{
+    padding: 10px;
+    align-items: center;
+    font-size: 22px;
+}
+
+.links2 a:link{
+    color: rgb(40, 201, 201);
+}
+
+.links2 a:visited{
+    color: #ff00ff;
+}
+
+.addSpace {
+    padding-top: 15px;
+    display: auto;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: auto;
+    flex-wrap: wrap;
+    width: 200%;
+    text-align: center;
+}
+
+.addSpace > .notifcacao {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 40%;
+}
+
+.addSpace > .notifcacao.positiva {
+    background-color: #5AAD52;
+    transition: all .5s;
+}
+
+.addSpace > .notifcacao.negativa {
+    background-color: #C33737;
+    color: white;
+    transition: all .5s;
+}
+
+.addSpace > .notifcacao.esconder {
+    opacity: 0;
+    visibility: hidden;
+    margin-left: -50%;
+    transition: all .5s;
+}
+
+.addSpace > .notifcacao > .button {
+    height: 20px;
+    margin-left: 15px;
+}
+
+.addSpace > .notifcacao > .button > div {
+    height: 2px;
+    width: 20px;
+    background-color: #000000;
+    transition: all .5s;
+}
+
+.addSpace > .notifcacao > .button > .b1 {
+    transform: rotate(45deg);
+    margin-top: 10px;
+}
+
+.addSpace > .notifcacao > .button > .b2 {
+    transform: rotate(-45deg);
+    margin-top: -2px;
+}  
