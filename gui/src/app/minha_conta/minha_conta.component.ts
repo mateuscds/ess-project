@@ -32,14 +32,14 @@ function ehAluno(objeto: Usuario) {
                 if(meu_user != null){
                     if(ehAluno(meu_user)){
                         this.meu_usuario = new Aluno(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
-                        this.controla_notificacao(true, true, "");
+                        this.controla_notificacao(false);
                     }
                     else{
                         this.meu_usuario = new Professor(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
-                        this.controla_notificacao(true, true, "");
+                        this.controla_notificacao(false);
                     }
                 }else{
-                    this.controla_notificacao(true, true, "Voce nao esta logado no sistema!");
+                    this.controla_notificacao(true, false, "Voce nao esta logado no sistema!");
                 }
             },
         );

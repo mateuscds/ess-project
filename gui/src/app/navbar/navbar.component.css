@@ -1,0 +1,35 @@
+nav {
+    background-color: #FAFAFA99;
+    padding: 15px 30px;
+    box-shadow: 0 5px 15px #333435;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav:hover {
+    background-color: #FAFAFABB;
+    padding: 15px 30px;
+    box-shadow: 0 5px 15px #000000;
+}
+
+nav > h1 {
+    color: #000000;
+    margin: 0;
+    font-weight: 500;
+}
+
+nav > h1 > a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.links {
+    display: flex;
+
+}
+
+.links > a {
+    text-decoration: none;
+    color: #000000;
+    margin: 0 5px;
+}
