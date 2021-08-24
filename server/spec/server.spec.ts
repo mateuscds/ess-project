@@ -146,4 +146,43 @@ describe("O servidor", () => {
             expect(e).toEqual(null)
         );
     })
+
+    // Testes da feature: Buscar Duvidas
+
+    it("Eu tenho salvo no sistema a dúvida 'O que são stakeholders?'", () => {
+        return request.get(base_url + "duvidas").then(body => {
+            body = JSON.parse(body)
+            let res = false
+            for (let elm of body) {
+                if (elm['titulo'] === 'O que são stakeholders?')
+                    res = true
+            }
+            expect(res).toBe(true)
+        });
+    })
+
+    it("Eu tenho salvo no sistema a dúvida 'Qual diferença entre requisitos funcionais e não funcionais?'", () => {
+        return request.get(base_url + "duvidas").then(body => {
+            body = JSON.parse(body)
+            let res = false
+            for (let elm of body) {
+                console.log(elm)
+                if (elm['titulo'] === 'Qual diferença entre requisitos funcionais e não funcionais?')
+                    res = true
+            }
+            expect(res).toBe(true)
+        });
+    })
+
+    it("Eu realizo uma busca por 'O que são stakeholders?'", () => {
+        return request.get(base_url + "duvidas").then(body => {
+            body = JSON.parse(body)
+            let res = false
+            for (let elm of body) {
+                if (elm['titulo'] === 'O que são stakeholders?')
+                    res = true
+            }
+            expect(res).toBe(true)
+        })
+    })
 })
