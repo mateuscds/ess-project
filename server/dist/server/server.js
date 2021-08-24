@@ -35,6 +35,7 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
     let nome = req.body.nome;
     let email = req.body.email;
     let senha = req.body.senha;
+    console.log("cadastro: ");
     let usuario;
     if (req.body.hasOwnProperty('mascara')) {
         usuario = new aluno_1.Aluno(cpf, nome, email, senha);
@@ -68,13 +69,13 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
             let flag = 0;
             if (notificadores.length == 0) {
                 notificadores.push(new notificador_1.Notificador(cpf));
-                console.log("Tava vazio");
+                console.log("Estava vazio");
                 // notificadores[0].notificacoes.push(nome);
             }
             else {
                 for (let notificador of notificadores) {
                     if (notificador.Cpf_user == cpf) {
-                        console.log("Tava criado já - cadastro");
+                        console.log("Notificador já existe");
                         flag = 1;
                         break;
                     }
@@ -93,6 +94,7 @@ servidor.post('/usuarios/cadastrar', (req, res) => {
                 success: 'Usuario cadastrado com sucesso!',
             });
         }
+        console.log(notificadores);
         console.log(usuarios);
     }
 });
@@ -102,6 +104,7 @@ servidor.get('/usuario', (req, res) => {
 servidor.post('/login', (req, res) => {
     let email = req.body.email;
     let senha = req.body.senha;
+    console.log(notificadores);
     let nulo = false;
     if (email === '' || senha === '') {
         nulo = true;
@@ -122,7 +125,7 @@ servidor.post('/login', (req, res) => {
         if (existe) {
             for (let notificador of notificadores) {
                 if (notificador.Cpf_user == usuario_sessao.Cpf) {
-                    console.log("Tava criado já - login");
+                    console.log("Notificador já existente");
                     break;
                 }
             }
@@ -136,7 +139,6 @@ servidor.post('/login', (req, res) => {
             });
         }
     }
-    console.log("memes");
     console.log(notificadores);
     console.log(usuario_sessao);
 });
@@ -555,7 +557,7 @@ servidor.get('/notificacoes', (req, res) => {
         console.log(usuario_sessao.Nome + " tá logado");
     }
     else {
-        console.log("Ngm tá logado");
+        console.log("Ninguém tá logado");
     }
     let key = -1;
     let index = 0;
@@ -589,6 +591,27 @@ servidor.get('/limpar', (req, res) => {
     else {
         console.log("Usuário sessão nulo");
     }
+    console.log(notificadores);
+});
+servidor.post('/set_notificador', (req, res) => {
+    let cpf = req.body.cpf;
+    let msg = req.body.msg;
+    let tipo = req.body.tipo;
+    let notificador = new notificador_1.Notificador(cpf);
+    let notificacao = new notificacao_1.Notificacao(msg, tipo);
+    notificador.notificacoes.push(notificacao);
+    let key = -1;
+    let index = 0;
+    for (let notif of notificadores) {
+        if (notif.Cpf_user == cpf) {
+            key = index;
+        }
+        index += 1;
+    }
+    notificadores[key] = notificador;
+});
+servidor.get('/notificador', (req, res) => {
+    res.send((notificadores));
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');

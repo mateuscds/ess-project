@@ -42,7 +42,7 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
     let nome = req.body.nome;
     let email = req.body.email;
     let senha = req.body.senha;
-
+    console.log("cadastro: ")
     let usuario;
     if(req.body.hasOwnProperty('mascara')){
         usuario = new Aluno(cpf, nome, email, senha);
@@ -82,12 +82,12 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
 
             if (notificadores.length == 0){
                 notificadores.push(new Notificador(cpf));
-                console.log("Tava vazio");
+                console.log("Estava vazio");
                 // notificadores[0].notificacoes.push(nome);
             } else {
                 for (let notificador of notificadores){
                     if (notificador.Cpf_user == cpf){
-                        console.log("Tava criado já - cadastro");
+                        console.log("Notificador já existe");
                         flag = 1;
                         break;
                     }
@@ -111,6 +111,7 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
                 success: 'Usuario cadastrado com sucesso!',
             })
         }
+        console.log(notificadores);
         console.log(usuarios);
     }
 })
@@ -122,6 +123,8 @@ servidor.get('/usuario', (req: express.Request, res: express.Response) => {
 servidor.post('/login', (req: express.Request, res: express.Response) => {
     let email = req.body.email;
     let senha = req.body.senha;
+
+    console.log(notificadores); 
     
     let nulo = false;
     if(email === '' || senha === ''){
@@ -147,14 +150,13 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
            
             for (let notificador of notificadores){
                 if (notificador.Cpf_user == usuario_sessao.Cpf){
-                    console.log("Tava criado já - login");
+                    console.log("Notificador já existente");
                     break;
                 }
             }
 
 
              
-
             res.send({
                 success: 'Login realizado com sucesso!',
             })
@@ -165,7 +167,6 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
             })
         }
     }  
-    console.log("memes");
     console.log(notificadores);  
     console.log(usuario_sessao);
 })
@@ -703,7 +704,7 @@ servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
     if (usuario_sessao != null){
         console.log(usuario_sessao.Nome + " tá logado");
     } else {
-        console.log("Ngm tá logado");
+        console.log("Ninguém tá logado");
     }
 
     let key = -1;
@@ -726,7 +727,6 @@ servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
 
 
 servidor.get('/limpar', (req: express.Request, res: express.Response) => {
-
     let key = -1;
     let index = 0;
     if (usuario_sessao != null){
@@ -741,6 +741,39 @@ servidor.get('/limpar', (req: express.Request, res: express.Response) => {
     } else {
         console.log("Usuário sessão nulo")
     }
+
+    console.log(notificadores);
+
+})
+
+
+servidor.post('/set_notificador', (req: express.Request, res: express.Response) => {
+    let cpf = req.body.cpf;
+    let msg = req.body.msg;
+    let tipo = req.body.tipo;
+
+    let notificador = new Notificador(cpf);
+    let notificacao = new Notificacao(msg,tipo);
+
+    notificador.notificacoes.push(notificacao);
+
+
+    let key = -1;
+    let index = 0;
+    for (let notif of notificadores){
+        if (notif.Cpf_user == cpf){
+            key = index;
+        }
+        index += 1;
+    }
+
+    
+    notificadores[key] = notificador;
+    
+})
+
+servidor.get('/notificador', (req: express.Request, res: express.Response) => {
+    res.send((notificadores));
 })
 
 
