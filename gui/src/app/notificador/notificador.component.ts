@@ -3,6 +3,7 @@ import { Usuario } from '../../../../common/usuario';
 import { Turma } from '../../../../common/turma';
 import { Notificador } from '../../../../common/notificador';
 import { NotificadorService } from './notificador.service';
+import { Notificacao } from '../../../../common/notificacao';
 
 @Component({
     selector: 'notificador',
@@ -45,11 +46,6 @@ export class NotificadorComponent {
                         this.cpf_user = usuario["cpf"];
                         this.nome_user = usuario["nome"];
                         this.alguem_logado = true;
-                        if (usuario.hasOwnProperty('mascara')){
-                            this.link = "/minhas_turmas";
-                        } else {
-                            this.link = "/gerenciamento_turma"
-                        }
                     } else {
                         this.alguem_logado = false;
                         this.notificador = new Notificador("");
@@ -84,7 +80,6 @@ export class NotificadorComponent {
                 },
             );
         }
-        
 
         console.log(this.notificador);
         console.log("mensagens: ");

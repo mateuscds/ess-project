@@ -1,6 +1,8 @@
+import { Notificacao } from './notificacao';
+
 export class Notificador{
 
-	notificacoes: Array<string>; 
+	notificacoes: Array<Notificacao>; 
     private cpf_user: string;
 
 	constructor(cpf_user: string) {
@@ -16,11 +18,11 @@ export class Notificador{
         this.cpf_user = cpf_user;
 	}
 
-    get Notificacoes(): Array<string>{
+    get Notificacoes(): Array<Notificacao>{
 		return this.notificacoes;
 	}
 
-	set Notificacoes(notificacoes: Array<string>){
+	set Notificacoes(notificacoes: Array<Notificacao>){
 		this.notificacoes = notificacoes;
 	}
 

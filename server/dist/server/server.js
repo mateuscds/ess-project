@@ -6,6 +6,8 @@ const aluno_1 = require("../common/aluno");
 const professor_1 = require("../common/professor");
 const turma_1 = require("../common/turma");
 const notificador_1 = require("../common/notificador");
+const duvida_1 = require("../common/duvida");
+const notificacao_1 = require("../common/notificacao");
 var servidor = express();
 exports.servidor = servidor;
 var allowCrossDomain = function (req, res, next) {
@@ -22,6 +24,12 @@ let turmas = [];
 let usuario_sessao = null;
 let turma_sessao = null;
 let notificadores = [];
+const duvida1 = new duvida_1.Duvida("duvida1", true, "Requisitos", "Como que faço isso?");
+const duvida2 = new duvida_1.Duvida("duvida2", true, "Teste", "Como que faço aquilo?");
+const duvida3 = new duvida_1.Duvida("duvida3", false, "Requisitos", "Como que faço aquilo lá?");
+let open_duvida = false;
+let duvidas;
+duvidas = [duvida1, duvida2, duvida3];
 servidor.post('/usuarios/cadastrar', (req, res) => {
     let cpf = req.body.cpf;
     let nome = req.body.nome;
@@ -430,7 +438,7 @@ servidor.post('/convidar_aluno', (req, res) => {
                     if (notificador.Cpf_user == usuario_convidado.Cpf) {
                         console.log("Achei aluno: " + usuario_convidado.Nome);
                         let msg = "Você foi convidado por " + usuario_sessao.Nome + " para participar da turma " + turma_sessao.Nome + ".";
-                        notificadores[i].Notificacoes.push(msg);
+                        notificadores[i].Notificacoes.push(new notificacao_1.Notificacao(msg, "convite"));
                         break;
                     }
                     i += 1;
@@ -440,7 +448,7 @@ servidor.post('/convidar_aluno', (req, res) => {
                     if (notificador.Cpf_user == usuario_sessao.Cpf) {
                         console.log("Achei professor: " + usuario_sessao.Nome);
                         let msg = "Seu convite para " + usuario_convidado.Nome + " está pendente!";
-                        notificadores[i].Notificacoes.push(msg);
+                        notificadores[i].Notificacoes.push(new notificacao_1.Notificacao(msg, "atualizacao"));
                         break;
                     }
                     i += 1;
@@ -490,7 +498,7 @@ servidor.post('/atualiza_convite', (req, res) => {
                 if (notificador.Cpf_user == usuario_sessao.Cpf) {
                     console.log("Achei aluno: " + usuario_sessao.Nome);
                     let msg = "Você foi convidado por " + prof.Nome + " para participar da turma " + turmas[index_turmas].Nome + ".";
-                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj !== msg);
+                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj.mensagem !== msg);
                     break;
                 }
                 i += 1;
@@ -500,12 +508,27 @@ servidor.post('/atualiza_convite', (req, res) => {
                 if (notificador.Cpf_user == prof.Cpf) {
                     console.log("Achei professor: " + prof.Nome);
                     let msg = "Seu convite para " + usuario_sessao.Nome + " foi aceito!";
-                    notificadores[i].Notificacoes.push(msg);
+                    notificadores[i].Notificacoes.push(new notificacao_1.Notificacao(msg, "atualizacao"));
                     msg = "Seu convite para " + usuario_sessao.Nome + " está pendente!";
-                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj !== msg);
+                    notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj.mensagem !== msg);
                     break;
                 }
                 i += 1;
+            }
+            if (open_duvida == false) {
+                if (usuario_sessao.Cpf == "123") {
+                    for (let notificador of notificadores) {
+                        if (notificador.Cpf_user == usuario_sessao.Cpf) {
+                            for (let d of duvidas) {
+                                if (d.Status == true) {
+                                    notificador.notificacoes.push(new notificacao_1.Notificacao("Sua duvida do assunto " + d.Assunto + " foi respondida!", "duvida"));
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    open_duvida = true;
+                }
             }
             res.send({
                 success: 'Convite aceito com sucesso!',
