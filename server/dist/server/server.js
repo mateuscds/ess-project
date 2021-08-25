@@ -450,7 +450,7 @@ servidor.post('/convidar_aluno', (req, res) => {
                     if (notificador.Cpf_user == usuario_sessao.Cpf) {
                         console.log("Achei professor: " + usuario_sessao.Nome);
                         let msg = "Seu convite para " + usuario_convidado.Nome + " está pendente!";
-                        notificadores[i].Notificacoes.push(new notificacao_1.Notificacao(msg, "atualizacao", turma_sessao.Codigo));
+                        notificadores[i].Notificacoes.push(new notificacao_1.Notificacao(msg, "atualizacao", turma_sessao.Codigo + "_" + usuario_convidado.Cpf));
                         break;
                     }
                     i += 1;
