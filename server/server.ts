@@ -37,12 +37,28 @@ let open_duvida = false;
 let duvidas: Duvida[]
 duvidas = [duvida1, duvida2, duvida3]
 
+
+
+function getNotificador(cpf:string): number {  
+    let key = -1;
+    let index = 0;
+
+    for (let notif of notificadores){
+        if (notif.Cpf_user == cpf){
+            key = index;
+        }
+        index += 1;
+    }
+
+    return key;
+}
+
+
 servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Response) => {
     let cpf = req.body.cpf;
     let nome = req.body.nome;
     let email = req.body.email;
     let senha = req.body.senha;
-    console.log("cadastro: ")
     let usuario;
     if(req.body.hasOwnProperty('mascara')){
         usuario = new Aluno(cpf, nome, email, senha);
@@ -82,12 +98,10 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
 
             if (notificadores.length == 0){
                 notificadores.push(new Notificador(cpf));
-                console.log("Estava vazio");
                 // notificadores[0].notificacoes.push(nome);
             } else {
                 for (let notificador of notificadores){
                     if (notificador.Cpf_user == cpf){
-                        console.log("Notificador já existe");
                         flag = 1;
                         break;
                     }
@@ -97,7 +111,6 @@ servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Respons
                 if (flag == 0){
                     notificadores.push(new Notificador(cpf));
                     // notificadores[index].notificacoes.push(nome);
-                    console.log("Não tava criado");
                 }
 
             }
@@ -124,7 +137,6 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
     let email = req.body.email;
     let senha = req.body.senha;
 
-    console.log(notificadores); 
     
     let nulo = false;
     if(email === '' || senha === ''){
@@ -150,7 +162,6 @@ servidor.post('/login', (req: express.Request, res: express.Response) => {
            
             for (let notificador of notificadores){
                 if (notificador.Cpf_user == usuario_sessao.Cpf){
-                    console.log("Notificador já existente");
                     break;
                 }
             }
@@ -550,7 +561,6 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
                 let i = 0;
                 for (let notificador of notificadores){
                     if (notificador.Cpf_user == usuario_convidado.Cpf){
-                        console.log("Achei aluno: " + usuario_convidado.Nome);
                         let msg = "Você foi convidado por "+ usuario_sessao.Nome +" para participar da turma " + turma_sessao.Nome + ".";
                         notificadores[i].Notificacoes.push(new Notificacao(msg, "convite", turma_sessao.Codigo));
                         break;
@@ -561,7 +571,6 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
                 i = 0;
                 for (let notificador of notificadores){
                     if (notificador.Cpf_user == usuario_sessao.Cpf){
-                        console.log("Achei professor: " + usuario_sessao.Nome);
                         let msg = "Seu convite para " + usuario_convidado.Nome + " está pendente!" ;
                         notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao", turma_sessao.Codigo+"_"+usuario_convidado.Cpf));
                         break;
@@ -632,7 +641,6 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
             let i = 0;
             for (let notificador of notificadores){
                 if (notificador.Cpf_user == usuario_sessao.Cpf){
-                    console.log("Achei aluno: " + usuario_sessao.Nome);
                     let msg = "Você foi convidado por "+ prof.Nome +" para participar da turma " + turmas[index_turmas].Nome + ".";
                     notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj.mensagem !== msg);
                     break;
@@ -643,7 +651,6 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
             i = 0;
             for (let notificador of notificadores){
                 if (notificador.Cpf_user == prof.Cpf){
-                    console.log("Achei professor: " + prof.Nome);
                     let msg = "Seu convite para " + usuario_sessao.Nome + " foi aceito!" ;
                     notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao", turmas[index_turmas].Codigo));
                     msg = "Seu convite para " + usuario_sessao.Nome + " está pendente!" ;
@@ -701,22 +708,11 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
 
 servidor.get('/notificacoes', (req: express.Request, res: express.Response) => {
 
-    if (usuario_sessao != null){
-        console.log(usuario_sessao.Nome + " tá logado");
-    } else {
-        console.log("Ninguém tá logado");
-    }
 
     let key = -1;
     let index = 0;
     if (usuario_sessao != null){
-        for (let notif of notificadores){
-            if (notif.Cpf_user == usuario_sessao.Cpf){
-                key = index;
-            }
-            index += 1;
-        }
-        console.log("Index -> " + key);
+        key = getNotificador(usuario_sessao.cpf)
 
         console.log(notificadores[key]);
         res.send((notificadores[key]));
@@ -730,12 +726,7 @@ servidor.get('/limpar', (req: express.Request, res: express.Response) => {
     let key = -1;
     let index = 0;
     if (usuario_sessao != null){
-        for (let notif of notificadores){
-            if (notif.Cpf_user == usuario_sessao.Cpf){
-                key = index;
-            }
-            index += 1;
-        }
+        key = getNotificador(usuario_sessao.cpf)
 
         notificadores[key].Notificacoes = [];
     } else {
@@ -759,13 +750,7 @@ servidor.post('/set_notificador', (req: express.Request, res: express.Response) 
 
 
     let key = -1;
-    let index = 0;
-    for (let notif of notificadores){
-        if (notif.Cpf_user == cpf){
-            key = index;
-        }
-        index += 1;
-    }
+    key = getNotificador(cpf)
 
     
     notificadores[key] = notificador;
