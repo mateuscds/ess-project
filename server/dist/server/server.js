@@ -4,6 +4,8 @@ exports.closeServer = exports.servidor = void 0;
 const express = require("express");
 const aluno_1 = require("../common/aluno");
 const professor_1 = require("../common/professor");
+const duvida_1 = require("../common/duvida");
+const thread_1 = require("../common/thread");
 var servidor = express();
 exports.servidor = servidor;
 var allowCrossDomain = function (req, res, next) {
@@ -15,8 +17,20 @@ var allowCrossDomain = function (req, res, next) {
 servidor.use(allowCrossDomain);
 servidor.use(express.json());
 servidor.use(express.urlencoded({ extended: true }));
+servidor.use(express.static('../gui'));
+servidor.set('view engine', 'pug');
 let usuarios = [];
 let usuario_sessao = null;
+const duvida1 = new duvida_1.Duvida("duvida1", true, "Requisitos", "Como que faço isso?");
+const duvida2 = new duvida_1.Duvida("duvida2", true, "Teste", "Como que faço aquilo?");
+const duvida3 = new duvida_1.Duvida("duvida3", false, "Requisitos", "Como que faço aquilo lá?");
+const thread1 = new thread_1.Thread("A partir de conversas com os stackholders", 0);
+const thread2 = new thread_1.Thread("Entendendo as necessidades deles", 1);
+const thread3 = new thread_1.Thread("Extraindo e observando as necessidades", 2);
+let duvidas;
+duvidas = [duvida1, duvida2, duvida3];
+let threads;
+threads = [thread1, thread2, thread3];
 servidor.post('/usuarios/cadastrar', (req, res) => {
     let cpf = req.body.cpf;
     let nome = req.body.nome;
@@ -182,6 +196,74 @@ servidor.post('/deleta', (req, res) => {
     });
     console.log(usuarios);
     console.log(usuario_sessao);
+});
+servidor.get('/duvidas', (req, res) => {
+    res.send(JSON.stringify(Array.from(duvidas)));
+});
+servidor.get('/threads', (req, res) => {
+    res.send(JSON.stringify(Array.from(threads)));
+});
+servidor.post('/publicar', (req, res) => {
+    let titulo = req.body.titulo;
+    let status = req.body.status;
+    let assunto = req.body.assunto;
+    let descricao = req.body.descricao;
+    let duvida;
+    duvida = new duvida_1.Duvida(titulo, status, assunto, descricao);
+    let nulo = false;
+    if (titulo === '' || status === '' || assunto === '' || descricao === '') {
+        nulo = true;
+    }
+    if (nulo) {
+        res.send({
+            failure: 'Alguma das entradas esta nula!',
+        });
+    }
+    else {
+        let existe = false;
+        for (let i of duvidas) {
+            if (i.titulo == duvida.titulo) {
+                existe = true;
+            }
+        }
+        if (existe) {
+            res.send({
+                failure: 'Uma duvida com esse TITULO ja existe na base de dados!',
+            });
+        }
+        else {
+            //console.log(usuarios);
+            duvidas.push(duvida);
+            console.log(usuarios);
+            res.send({
+                success: 'Duvida cadastrada com sucesso!',
+            });
+        }
+        console.log(duvidas);
+    }
+});
+servidor.post('/responder', (req, res) => {
+    let discursao = req.body.discursao;
+    let id = req.body.id;
+    let thread;
+    thread = new thread_1.Thread(discursao, id);
+    let nulo = false;
+    if (discursao === '' || id === '') {
+        nulo = true;
+    }
+    if (nulo) {
+        res.send({
+            failure: 'Alguma das entradas esta nula!',
+        });
+    }
+    else {
+        threads.push(thread);
+        console.log(threads);
+        res.send({
+            success: 'Resposta cadastrada com sucesso!',
+        });
+        console.log(threads);
+    }
 });
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!');

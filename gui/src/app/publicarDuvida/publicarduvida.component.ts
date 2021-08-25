@@ -12,6 +12,7 @@ export class PublicarDuvidaComponent {
     duvidas: Duvida[] = [];
     notificacaoClasses: {} = {};
     notificacaoTexto: String = '';
+    private todasDuvidas: Duvida[] = [];
 
     constructor(private PublicarDuvidaService: PublicarDuvidaService) { }
 
@@ -30,11 +31,17 @@ export class PublicarDuvidaComponent {
         }
     }
 
+    ngOnInit() {
+        this.PublicarDuvidaService.getTodasDuvidas().subscribe(
+            duvidas => {this.todasDuvidas = duvidas}
+        )
+    }
+
     cadastrarDuvida(titulo: string, status: boolean, assunto: string, descricao: string): void{
     
         this.PublicarDuvidaService.cadastrar(titulo, status, assunto, descricao).subscribe(
             (status) => {
-                if (status === "Usuario cadastrado com sucesso!") {
+                if (status === "Duvida cadastrada com sucesso!") {
                     this.PublicarDuvidaService.getTodasDuvidas().subscribe(
                         all_doubt => { 
                         this.duvidas = all_doubt; 
@@ -55,5 +62,16 @@ export class PublicarDuvidaComponent {
                 }
             },
         );
+    }
+
+    get ExibidasDuvidas() {
+        console.log(this.todasDuvidas)
+        return this.todasDuvidas
+    }
+
+    exibirTodasDuvidas(): void {
+        this.PublicarDuvidaService.getTodasDuvidas().subscribe(
+            duvidas => {this.todasDuvidas = duvidas}
+        )
     }
 }

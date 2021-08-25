@@ -3,15 +3,15 @@
     <div class="publicarDuvidaInputs">
         <div class="tituloBlock">
             <label>Titulo: </label>
-            <input #titulo_box type="text"/>
+            <input #titulo_box type="text" name="titulobox"/>
         </div>
         <div class="assuntoBlock">
             <label>Assunto: </label>
-            <input #assunto_box type="text"/>
+            <input #assunto_box type="text" name="assuntobox"/>
         </div>
         <div class="descricaoBlock">
             <label>Descricao: </label>
-            <input #descricao_box type="text"/>
+            <input #descricao_box type="text" name="descricaobox"/>
         </div>
         
     </div>
@@ -23,4 +23,11 @@
             <div class="b2"></div>
         </div>
     </div>
+
+    <tr *ngFor="let d of ExibidasDuvidas" name="duvidalist">
+        <td name="titulolist">{{d.titulo}}</td>
+        <td name="assuntolist">{{d.assunto}}</td>
+        <td name="statuslist">{{d.status}}</td>
+        <td name="descricaolist">{{d.descricao}}</td>
+    </tr>
 </section>
