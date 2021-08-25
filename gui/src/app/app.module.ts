@@ -24,6 +24,8 @@ import { MinhasTurmasService } from './minhas_turmas/minhas_turmas.service';
 
 import { GerenciamentoTurmaComponent } from './gerenciamento_turma/gerenciamento_turma.component';
 import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_turma.service';
+import { CanalDuvidaComponent } from './canal-duvida/canal-duvida.component';
+import { CanalDuvidaService } from './canal-duvida/canal-duvida.service';
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
     CriarTurmaComponent,
     MinhasTurmasComponent,
     GerenciamentoTurmaComponent,
+    CanalDuvidaComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,12 +76,18 @@ import { GerenciamentoTurmaService } from './gerenciamento_turma/gerenciamento_t
     ]),
     RouterModule.forRoot([
       {
+        path: 'canais_duvidas',
+        component: CanalDuvidaComponent
+      },
+    ]),
+    RouterModule.forRoot([
+      {
         path: 'gerenciamento_turma',
         component: GerenciamentoTurmaComponent
       },
     ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService],
+  providers: [CadastroService, LoginService, MinhaContaService, CriarTurmaService, MinhasTurmasService, GerenciamentoTurmaService, CanalDuvidaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
