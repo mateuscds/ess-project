@@ -43,13 +43,13 @@ Scenario: clicar em uma notificação de atualização.
     Then está na página da turma de NOME "SD" e CÓDIGO "444"
 
 
-Scenario: atualização do status da resposta do aluno.
-    Given que o aluno de CPF "678", NOME "joao", EMAIL "joao@cin" e SENHA "123" está cadastrado no sistema
-    And o aluno de EMAIL "joao@cin" foi convidado para uma turma de NOME "MD", CÓDIGO "555" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
-    When o aluno de EMAIL "joao@cin" e SENHA "123" loga no sistema 
-    And atualiza as notificações
-    And aluno de CPF "678" clica na notificação do convite para a turma de NOME "MD" e CÓDIGO "555" pelo professor de NOME "marcio"
-    And clica em aceitar o convite para a turma de NOME "MD" e CÓDIGO "555"
-    And atualiza as notificações
-    Then notificação de convite para a turma de NOME "MD" e CÓDIGO "555" para o aluno de NOME "joao" e CPF "678" é removida
+# Scenario: atualização do status da resposta do aluno.
+#     Given que o aluno de CPF "678", NOME "joao", EMAIL "joao@cin" e SENHA "123" está cadastrado no sistema
+#     And o aluno de EMAIL "joao@cin" foi convidado para uma turma de NOME "MD", CÓDIGO "555" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+#     When o aluno de EMAIL "joao@cin" e SENHA "123" loga no sistema 
+#     And atualiza as notificações
+#     And aluno de CPF "678" clica na notificação do convite para a turma de NOME "MD" e CÓDIGO "555" pelo professor de NOME "marcio"
+#     And clica em aceitar o convite para a turma de NOME "MD" e CÓDIGO "555"
+#     And atualiza as notificações
+#     Then notificação de convite para a turma de NOME "MD" e CÓDIGO "555" para o aluno de NOME "joao" e CPF "678" é removida
 

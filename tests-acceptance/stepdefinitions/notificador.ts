@@ -217,20 +217,4 @@ defineSupportCode(function ({ Given, When, Then }) {
     await expect(element(by.id('minhasTurmasID')).getText()).to.eventually.equal("MINHAS TURMAS");
   });
 
-
-
-  Then("notificação de convite para a turma de NOME {stringInDoubleQuotes} e CÓDIGO {stringInDoubleQuotes} para o aluno de NOME {stringInDoubleQuotes} e CPF {stringInDoubleQuotes} é removida", {timeout: 300 * 1000}, async (nome_turma, codigo_turma, nome_aluno, cpf_aluno) => {
-
-    let flag = false;
-
-    await expect(element(by.id(codigo_turma+"_"+cpf_aluno)).isDisplayed().then(function(visible) {
-      if (visible) {
-        flag = true;
-      } else {
-        flag = false;
-      }
-    }));
-
-    await expect(flag).to.equal(false);
-  });
 });
