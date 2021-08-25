@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Duvida = void 0;
 class Duvida {
-    constructor(titulo, status, assunto, descricao) {
+    constructor(titulo, status, assunto, descricao, codigo) {
         this.titulo = titulo;
         this.assunto = assunto;
         this.status = status;
         this.descricao = descricao;
+        this.codigo = codigo;
     }
     get Titulo() {
         return this.titulo;
@@ -31,6 +32,12 @@ class Duvida {
     }
     set Descricao(descricao) {
         this.descricao = descricao;
+    }
+    get Codigo() {
+        return this.codigo;
+    }
+    set Codigo(codigo) {
+        this.codigo = codigo;
     }
 }
 exports.Duvida = Duvida;

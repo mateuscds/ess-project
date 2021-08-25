@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Notificacao = void 0;
 class Notificacao {
-    constructor(mensagem, tipo) {
+    constructor(mensagem, tipo, codigo) {
         this.mensagem = mensagem;
         this.tipo = tipo;
+        this.codigo = codigo;
     }
     get Mensagem() {
         return this.mensagem;
@@ -17,6 +18,12 @@ class Notificacao {
     }
     set Tipo(tipo) {
         this.tipo = tipo;
+    }
+    get Codigo() {
+        return this.codigo;
+    }
+    set Codigo(codigo) {
+        this.codigo = codigo;
     }
 }
 exports.Notificacao = Notificacao;

@@ -2,10 +2,12 @@ export class Notificacao{
 
 	mensagem: string;
     tipo: string;
+	codigo: string;
 
-	constructor(mensagem: string, tipo: string) {
+	constructor(mensagem: string, tipo: string, codigo:string) {
         this.mensagem = mensagem;
         this.tipo = tipo;
+		this.codigo = codigo;
 	}
 
     get Mensagem(): string{
@@ -22,6 +24,14 @@ export class Notificacao{
 
 	set Tipo(tipo: string){
         this.tipo = tipo;
+	}
+
+	get Codigo(): string{
+		return this.codigo;
+	}
+
+	set Codigo(codigo: string){
+        this.codigo = codigo;
 	}
 
 }

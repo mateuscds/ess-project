@@ -4,12 +4,14 @@ export class Duvida{
     status : boolean;
     assunto: string
 	descricao : string;
+	codigo: string;
 
-	constructor(titulo: string, status: boolean, assunto: string, descricao: string) {
+	constructor(titulo: string, status: boolean, assunto: string, descricao: string, codigo: string){
 		this.titulo = titulo;
         this.assunto = assunto;
 		this.status = status;
 		this.descricao = descricao;
+		this.codigo = codigo;
 	}
 
 	get Titulo(): string{
@@ -42,6 +44,14 @@ export class Duvida{
 
 	set Descricao(descricao: string){
         this.descricao = descricao;
+	}
+
+	get Codigo(): string{
+		return this.codigo;
+	}
+
+	set Codigo(codigo: string){
+        this.codigo = codigo;
 	}
 
 }

@@ -29,9 +29,9 @@ let usuario_sessao = null;
 let turma_sessao = null;
 let notificadores: Notificador[] = [];
 
-const duvida1 = new Duvida("duvida1", true, "Requisitos", "Como que faço isso?")
-const duvida2 = new Duvida("duvida2", true, "Teste", "Como que faço aquilo?")
-const duvida3 = new Duvida("duvida3", false, "Requisitos", "Como que faço aquilo lá?")
+const duvida1 = new Duvida("duvida1", true, "Requisitos", "Como que faço isso?", "1")
+const duvida2 = new Duvida("duvida2", true, "Teste", "Como que faço aquilo?", "2")
+const duvida3 = new Duvida("duvida3", false, "Requisitos", "Como que faço aquilo lá?", "3")
 
 let open_duvida = false;
 let duvidas: Duvida[]
@@ -552,7 +552,7 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
                     if (notificador.Cpf_user == usuario_convidado.Cpf){
                         console.log("Achei aluno: " + usuario_convidado.Nome);
                         let msg = "Você foi convidado por "+ usuario_sessao.Nome +" para participar da turma " + turma_sessao.Nome + ".";
-                        notificadores[i].Notificacoes.push(new Notificacao(msg, "convite"));
+                        notificadores[i].Notificacoes.push(new Notificacao(msg, "convite", turma_sessao.Codigo));
                         break;
                     }
                     i += 1;
@@ -563,7 +563,7 @@ servidor.post('/convidar_aluno', (req: express.Request, res: express.Response) =
                     if (notificador.Cpf_user == usuario_sessao.Cpf){
                         console.log("Achei professor: " + usuario_sessao.Nome);
                         let msg = "Seu convite para " + usuario_convidado.Nome + " está pendente!" ;
-                        notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao"));
+                        notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao", turma_sessao.Codigo));
                         break;
                     }
                     i += 1;
@@ -645,7 +645,7 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
                 if (notificador.Cpf_user == prof.Cpf){
                     console.log("Achei professor: " + prof.Nome);
                     let msg = "Seu convite para " + usuario_sessao.Nome + " foi aceito!" ;
-                    notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao"));
+                    notificadores[i].Notificacoes.push(new Notificacao(msg, "atualizacao", turmas[index_turmas].Codigo));
                     msg = "Seu convite para " + usuario_sessao.Nome + " está pendente!" ;
                     notificadores[i].Notificacoes = notificadores[i].Notificacoes.filter(obj => obj.mensagem !== msg);
                     break;
@@ -659,7 +659,7 @@ servidor.post('/atualiza_convite', (req: express.Request, res: express.Response)
                         if (notificador.Cpf_user == usuario_sessao.Cpf){
                             for (let d of duvidas){
                                 if (d.Status == true){
-                                    notificador.notificacoes.push(new Notificacao("Sua duvida do assunto "+ d.Assunto +" foi respondida!", "duvida"));
+                                    notificador.notificacoes.push(new Notificacao("Sua duvida do assunto "+ d.Assunto +" foi respondida!", "duvida", d.Codigo));
                                 }
                             }
                             break;
@@ -753,7 +753,7 @@ servidor.post('/set_notificador', (req: express.Request, res: express.Response) 
     let tipo = req.body.tipo;
 
     let notificador = new Notificador(cpf);
-    let notificacao = new Notificacao(msg,tipo);
+    let notificacao = new Notificacao(msg,tipo,"123");
 
     notificador.notificacoes.push(notificacao);
 

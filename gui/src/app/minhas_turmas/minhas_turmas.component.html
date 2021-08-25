@@ -7,7 +7,7 @@
         <div *ngFor="let t of turmas; let i = index" class="turmaContainer">
 
             <div class = "links">
-                <a mat-button class = "gerenciar-turma-link" routerLink = "/gerenciamento_turma" (click)="envia_turma(t.Codigo)" >{{t.Nome}}</a>
+                <a mat-button class = "gerenciar-turma-link" name={{t.Codigo}} routerLink = "/gerenciamento_turma" (click)="envia_turma(t.Codigo)" >{{t.Nome}}</a>
             </div>
         </div>
     </section>
@@ -24,18 +24,18 @@
             <div *ngIf="lista_status[i] == 'Pendente'">
 
                 <div class = "links">
-                    <a mat-button class = "gerenciar-turma-link" routerLink = "/" >{{t.Nome}}</a>
+                    <a mat-button class = "gerenciar-turma-link" name={{t.Codigo}} routerLink = "/" >{{t.Nome}}</a>
                 </div>
 
-                <button (click)="aceita_convite(t.Codigo)"> Aceitar </button>
-                <button (click)="rejeita_convite(t.Codigo)"> Rejeitar </button>
+                <button id=botao_aceitar_{{t.Codigo}} (click)="aceita_convite(t.Codigo)"> Aceitar </button>
+                <button id=botao_rejeitar_{{t.Codigo}}  (click)="rejeita_convite(t.Codigo)"> Rejeitar </button>
 
             </div>
 
             <div *ngIf="!(lista_status[i] == 'Pendente')">
 
                 <div class = "links2">
-                    <a mat-button class = "gerenciar-turma-link" routerLink = "/"  style="color:#ff00ff;">{{t.Nome}}</a>
+                    <a mat-button class = "gerenciar-turma-link" routerLink = "/">{{t.Nome}}</a>
                 </div>
 
             </div>
