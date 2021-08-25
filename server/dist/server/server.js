@@ -585,13 +585,7 @@ servidor.post('/set_notificador', (req, res) => {
     let notificacao = new notificacao_1.Notificacao(msg, tipo, "123");
     notificador.notificacoes.push(notificacao);
     let key = -1;
-    let index = 0;
-    for (let notif of notificadores) {
-        if (notif.Cpf_user == cpf) {
-            key = index;
-        }
-        index += 1;
-    }
+    key = getNotificador(cpf);
     notificadores[key] = notificador;
 });
 servidor.get('/notificador', (req, res) => {

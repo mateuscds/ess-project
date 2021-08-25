@@ -24,14 +24,14 @@ import { MinhaContaService } from './minha_conta.service';
                 if(meu_user != null){
                     if(meu_user.hasOwnProperty('mascara')){
                         this.meu_usuario = new Aluno(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
-                        this.controla_notificacao(true, true, "");
+                        this.controla_notificacao(false);
                     }
                     else{
                         this.meu_usuario = new Professor(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
-                        this.controla_notificacao(true, true, "");
+                        this.controla_notificacao(false);
                     }
                 }else{
-                    this.controla_notificacao(true, true, "Voce nao esta logado no sistema!");
+                    this.controla_notificacao(true, false, "Voce nao esta logado no sistema!");
                 }
             },
         );

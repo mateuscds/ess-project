@@ -28,7 +28,7 @@ export class CriarTurmaComponent {
                     }
                     else{
                         this.professor = new Professor(meu_user["cpf"], meu_user["nome"], meu_user["email"], meu_user["senha"]);
-                        this.controla_notificacao(true, true, "");
+                        this.controla_notificacao(false);
                     }
                 }else{
                     this.controla_notificacao(true, true, "Voce nao esta logado no sistema!");

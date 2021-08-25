@@ -1,0 +1,44 @@
+.notificadorView {
+    margin: auto;
+    width: 30%;
+    border: 2px solid grey;
+    padding: 10px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.notificadorTitle{
+    margin-top: -2px;
+    text-align: center;
+}
+
+.turmaContainer{
+    padding: 10px;
+    align-items: center;
+    font-size: 22px;
+}
+
+
+.addSpace > .notifcacao > .button {
+    height: 20px;
+    margin-left: 15px;
+}
+
+.addSpace > .notifcacao > .button > div {
+    height: 2px;
+    width: 20px;
+    background-color: #000000;
+    transition: all .5s;
+}
+
+.addSpace > .notifcacao > .button >  {
+    transform: rotate(45deg);
+    margin-top: 10px;
+}
+
+.addSpace > .notifcacao > .button > .b2 {
+    transform: rotate(-45deg);
+    margin-top: -2px;
+}  
