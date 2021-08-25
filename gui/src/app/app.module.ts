@@ -18,6 +18,8 @@ import { ExibirDuvidaComponent } from './exibirDuvida/exibirduvida.component';
 import { ExibirDuvidaService } from './exibirDuvida/exibirduvida.service';
 import { PublicarDuvidaComponent } from './publicarDuvida/publicarduvida.component';
 import { PublicarDuvidaService } from './publicarDuvida/publicarduvida.service';
+import { ResponderDuvidaComponent } from './responderDuvida/responderduvida.component';
+import { ResponderDuvidaService } from './responderDuvida/responderduvida.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { PublicarDuvidaService } from './publicarDuvida/publicarduvida.service';
     MinhaContaComponent,
     DuvidaComponent,
     ExibirDuvidaComponent,
-    PublicarDuvidaComponent
+    PublicarDuvidaComponent,
+    ResponderDuvidaComponent
   ],
   imports: [
     BrowserModule,
@@ -69,9 +72,15 @@ import { PublicarDuvidaService } from './publicarDuvida/publicarduvida.service';
           path: 'publicar_duvida',
           component: PublicarDuvidaComponent
         }
-    ])
+    ]),
+    RouterModule.forRoot([
+      {
+        path: 'responder_duvida',
+        component: ResponderDuvidaComponent
+      }
+  ])
   ],
-  providers: [CadastroService, LoginService, MinhaContaService, ExibirDuvidaService, PublicarDuvidaService],
+  providers: [CadastroService, LoginService, MinhaContaService, ExibirDuvidaService, PublicarDuvidaService, ResponderDuvidaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

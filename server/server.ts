@@ -6,6 +6,7 @@ import { Aluno } from '../common/aluno';
 import { Professor } from '../common/professor';
 import { Cadastro } from './cadastro';
 import { Duvida } from '../common/duvida'
+import { Thread } from '../common/thread'
 
 var servidor = express();
 
@@ -29,8 +30,15 @@ const duvida1 = new Duvida("duvida1", true, "Requisitos", "Como que faço isso?"
 const duvida2 = new Duvida("duvida2", true, "Teste", "Como que faço aquilo?")
 const duvida3 = new Duvida("duvida3", false, "Requisitos", "Como que faço aquilo lá?")
 
+const thread1 = new Thread("A partir de conversas com os stackholders", 0)
+const thread2 = new Thread("Entendendo as necessidades deles", 1)
+const thread3 = new Thread("Extraindo e observando as necessidades", 2)
+
 let duvidas: Duvida[]
 duvidas = [duvida1, duvida2, duvida3]
+
+let threads: Thread[]
+threads = [thread1, thread2, thread3]
 
 servidor.post('/usuarios/cadastrar', (req: express.Request, res: express.Response) => {
     let cpf = req.body.cpf;
@@ -229,6 +237,10 @@ servidor.get('/duvidas', (req: express.Request, res: express.Response) => {
     res.send(JSON.stringify(Array.from(duvidas)))
 })
 
+servidor.get('/threads', (req: express.Request, res: express.Response) => {
+    res.send(JSON.stringify(Array.from(threads)))
+})
+
 servidor.post('/publicar', (req: express.Request, res: express.Response) => {
     let titulo = req.body.titulo;
     let status = req.body.status;
@@ -274,6 +286,35 @@ servidor.post('/publicar', (req: express.Request, res: express.Response) => {
     }
 })
 
+servidor.post('/responder', (req: express.Request, res: express.Response) => {
+    
+    let discursao = req.body.discursao;
+    let id = req.body.id;
+
+    let thread;
+    thread = new Thread(discursao, id);
+
+    let nulo = false;
+    if (discursao === '' || id === ''){
+        nulo = true;
+    }
+
+    if(nulo){
+        res.send({
+            failure: 'Alguma das entradas esta nula!',
+        })
+    }
+    else{
+        threads.push(thread);
+        console.log(threads);
+
+        res.send({
+            success: 'Resposta cadastrada com sucesso!',
+        })
+        
+        console.log(threads);
+    }
+})
 
 var server = servidor.listen(3000, function () {
     console.log('Example app listening on port 3000!')

@@ -1,0 +1,21 @@
+<section class="responderDuvidaView">
+    <h1 class="responderrDuvidaTitle">RESPONDER DUVIDA</h1>
+    <div class="responderrDuvidaInputs">
+        <div class="siscursaoBlock">
+            <label>Resposta: </label>
+            <input #resposta_box type="text"/>
+        </div>
+        <div class="tipoDuvida">
+            <form>
+                <label>Selecione a duvida: </label>
+                <select id="duvida"> 
+                    <td *ngIf="ExibidasDuvidas.length === 0"> Nenhuma Dúvida Encontrada </td>
+                    <option *ngFor="let d of ExibidasDuvidas; let indice = index;">{{d.titulo}} {{indice}}</option>
+                </select>
+            </form>
+            <td>{{indice}}</td>       
+        </div>
+    </div>
+    <button (click)="responderDuvida(resposta_box.value, indice)"> Responder </button>
+
+</section>
