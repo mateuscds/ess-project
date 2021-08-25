@@ -12,6 +12,7 @@ import { ResponderDuvidaService } from './responderduvida.service';
 export class ResponderDuvidaComponent {
     threads: Thread[] = [];
     private todasDuvidas: Duvida[] = [];
+    private todasThreads: Thread[] = [];
     notificacaoClasses: {} = {};
     notificacaoTexto: String = '';
 
@@ -23,6 +24,9 @@ export class ResponderDuvidaComponent {
         this.ResponderDuvidaService.getTodasDuvidas().subscribe(
             duvidas => {this.todasDuvidas = duvidas}
         )
+        this.ResponderDuvidaService.getTodasThreads().subscribe(
+            threads => {this.todasThreads = threads}
+        )
     }
 
     get ExibidasDuvidas() {
@@ -30,9 +34,20 @@ export class ResponderDuvidaComponent {
         return this.todasDuvidas
     }
 
+    get ExibidasThreads() {
+        console.log(this.todasThreads)
+        return this.todasThreads
+    }
+
     exibirTodasDuvidas(): void {
         this.ResponderDuvidaService.getTodasDuvidas().subscribe(
             duvidas => {this.todasDuvidas = duvidas}
+        )
+    }
+
+    exibirTodasThreads(): void {
+        this.ResponderDuvidaService.getTodasThreads().subscribe(
+            threads => {this.todasThreads = threads}
         )
     }
 
@@ -51,7 +66,7 @@ export class ResponderDuvidaComponent {
         }
     }
 
-    responderDuvida(discursao: string, id: number): void{
+    responderDuvida(discursao: string, id: string): void{
     
         this.ResponderDuvidaService.responder(discursao, id).subscribe(
             (status) => {

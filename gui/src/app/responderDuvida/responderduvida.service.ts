@@ -13,7 +13,7 @@ export class ResponderDuvidaService {
 
     constructor(private http: HttpClient) { }
 
-    responder(discursao: string, id: number): Observable<String> {
+    responder(discursao: string, id: string): Observable<String> {
        
         let thread;
         thread = new Thread(discursao, id);

@@ -1,9 +1,9 @@
 export class Thread{
 
 	discursao : string;
-    id: number;
+    id: string;
 
-	constructor(discursao: string, id: number) {
+	constructor(discursao: string, id: string) {
 		this.discursao = discursao;
         this.id = id;
 	}
@@ -16,11 +16,11 @@ export class Thread{
         this.discursao = discursao;
 	}
 
-    get Id(): number{
+    get Id(): string{
 		return this.id;
 	}
 
-	set Id(id: number){
+	set Id(id: string){
         this.id = id;
 	}
 

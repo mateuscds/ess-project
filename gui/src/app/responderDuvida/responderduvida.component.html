@@ -3,19 +3,34 @@
     <div class="responderrDuvidaInputs">
         <div class="siscursaoBlock">
             <label>Resposta: </label>
-            <input #resposta_box type="text"/>
+            <input name="respostabox" #resposta_box type="text"/>
         </div>
         <div class="tipoDuvida">
             <form>
                 <label>Selecione a duvida: </label>
                 <select id="duvida"> 
                     <td *ngIf="ExibidasDuvidas.length === 0"> Nenhuma Dúvida Encontrada </td>
-                    <option *ngFor="let d of ExibidasDuvidas; let indice = index;">{{d.titulo}} {{indice}}</option>
+                    <option *ngFor="let d of ExibidasDuvidas; let indice = index;">{{indice}} - {{d.titulo}}</option>
                 </select>
-            </form>
-            <td>{{indice}}</td>       
+            </form>     
+        </div>
+        <div class="siscursaoBlock">
+            <label>Selecione o numero da sua duvida: </label>
+            <input name="numerobox" #numero_box type="string"/>
         </div>
     </div>
-    <button (click)="responderDuvida(resposta_box.value, indice)"> Responder </button>
+    <button name="resposta_"(click)="responderDuvida(resposta_box.value, numero_box.value)"> Responder </button>
+    <div class="addSpace">
+        <div class="notifcacao" [ngClass]="notificacaoClasses" name="notificatxt_resposta" id="notifica"><span class="notifcacaotxt" name="notificatxt_publicacao" id="notificatxt">{{notificacaoTexto}}</span></div>
+        <div class="button" (click)="controla_notificacao(false)">
+            <div class="b1"></div>
+            <div class="b2"></div>
+        </div>
+    </div>
+    <br>
+    <tr *ngFor="let t of ExibidasThreads" name="threadlist">
+        <td name="respostalist">{{t.discursao}}</td>
+        <td name="indicelist">{{t.id}}</td>
+    </tr>
 
 </section>
