@@ -5,82 +5,76 @@ Feature: Notificador de atualização e convites
     So that: pode-se ver uma lista de notificações
 
 Scenario: visualizar notificações.
-    Given: o usuário "lucas" está logado
-    When: "lucas" atualiza as "Notificações"
-    Then: aparece uma lista de notificações referentes a "lucas"
+    Given que o usuario de CPF "123", NOME "lucas", EMAIL "lucas@cin" e SENHA "123" está logado no sistema
+    When atualiza as notificações
+    Then aparece uma lista de notificações referentes a ao usuário de NOME "lucas"
+
 
 Scenario: visualizar notificação de convite.
-    Given: o usuário "lucas" está logado como Aluno
-    And: "lucas" foi convidado para uma turma pelo professor "marcio"
-    When: "lucas" atualiza as "Notificações"
-    Then: uma notificação do convite da turma vindo do professor "marcio" aparece na tela
+    Given que o aluno de CPF "123", NOME "lucas", EMAIL "lucas@cin" e SENHA "123" está cadastrado no sistema
+    And o aluno de EMAIL "lucas@cin" foi convidado para uma turma de NOME "ess", CÓDIGO "111" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+    When o aluno de EMAIL "lucas@cin" e SENHA "123" loga no sistema 
+    And atualiza as notificações
+    Then uma notificação do convite de turma de NOME "ess" e CÓDIGO "111" pelo professor de NOME "marcio"
+
+
+Scenario: visualizar notificação de atualização.
+    Given que o aluno de CPF "123", NOME "lucas", EMAIL "lucas@cin" e SENHA "123" está cadastrado no sistema
+    And o aluno de EMAIL "lucas@cin" foi convidado para uma turma de NOME "ip", CÓDIGO "222" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+    When atualiza as notificações
+    Then uma notificação do atualização de convite pendente da turma de NOME "ip" e CÓDIGO "222" para o aluno de NOME "lucas" e CPF "123"
 
 
 Scenario: clicar em uma notificação de convite.
-    Given: o usuário "lucas" está logado como Aluno
-    And: "lucas" está na janela de "Notificações"
-    And: existe a notificação de um convite para a turma "ess 2017.2"
-    When: "lucas" clica na notificação do convite para a turma
-    Then: a página é redirecionada para a página da turma "ess 2017.2"
+    Given que o aluno de CPF "123", NOME "lucas", EMAIL "lucas@cin" e SENHA "123" está cadastrado no sistema
+    And o aluno de EMAIL "lucas@cin" foi convidado para uma turma de NOME "algoritmos", CÓDIGO "333" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+    When o aluno de EMAIL "lucas@cin" e SENHA "123" loga no sistema 
+    And atualiza as notificações
+    And aluno de CPF "123" clica na notificação do convite para a turma de NOME "algoritmos" e CÓDIGO "333" pelo professor de NOME "marcio"
+    Then está na página de minhas turmas
 
-
-Scenario: visualização de notificação de convite enviado.
-    Given: o usuário "marcio" está logado como Professor
-    And: "marcio" enviou um convite para um aluno de email "lucas@cin.ufpe.br" para a turma "ess 2017.2"
-    When: "marcio" vai para aba de "Notificações"
-    Then: consegue visualizar uma notificação que o convite para o aluno de email "lucas@cin.ufpe.br" foi enviado
-
-
-Scenario: visualização de convite aceito.
-    Given: O usuário "marcio" está logado como Professor
-    And: "marcio" enviou um convite para um aluno de email "lucas@cin.ufpe.br" para a turma "ess 2017.2"
-    When: "marcio" vai para aba de "Notificações"
-    Then: consegue visualizar uma notificação que o aluno de email "lucas@cin.ufpe.br" aceitou o convite
-
-Scenario: visualização de convite rejeitado.
-    Given: o usuário "marcio" está logado como Professor
-    And: "marcio" enviou um convite para um aluno de email "lucas@cin.ufpe.br" para a turma "ess 2017.2"
-    When: "marcio" vai para aba de "Notificações"
-    Then: consegue visualizar uma notificação que o aluno de email "lucas@cin.ufpe.br" rejeitado o convite
-
-Scenario: clicar em uma notificação de resposta de convite.
-    Given: o usuário "marcio" está logado como Professor
-    And: "marcio" está na janela de "Notificações"
-    And: existe a notificação de aceitação ou rejeição de convite para a turma "ess 2017.2"
-    When: "marcio" clica na notificação da resposta do convite
-    Then: a página é redirecionada para a página da turma "ess 2017.2"
+Scenario: clicar em uma notificação de atualização.
+    Given que o aluno de CPF "123", NOME "lucas", EMAIL "lucas@cin" e SENHA "123" está cadastrado no sistema
+    And o aluno de EMAIL "lucas@cin" foi convidado para uma turma de NOME "SD", CÓDIGO "444" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+    When o professor de EMAIL "marcio@cin" e SENHA "456" loga no sistema 
+    And atualiza as notificações
+    And professor de CPF "456" clica na notificação de atualização de convite para a turma de NOME "SD" e CÓDIGO "444" para o aluno de CPF "123"
+    Then está na página da turma de NOME "SD" e CÓDIGO "444"
 
 
 Scenario: atualização do status da resposta do aluno.
-    Given: a professor "marcio" enviou um convite para um aluno
-    And: ha uma notificação de convite enviado
-    When: aluno aceitou ou rejeitou o convite
-    Then: a notificação de convite enviado some
-    And: aparece uma notificação referente a resposta do aluno
+    Given que o aluno de CPF "678", NOME "joao", EMAIL "joao@cin" e SENHA "123" está cadastrado no sistema
+    And o aluno de EMAIL "joao@cin" foi convidado para uma turma de NOME "MD", CÓDIGO "555" e SEMESTRE "1" de pelo professor de CPF "456", NOME "marcio", EMAIL "marcio@cin" e SENHA "123"
+    When o aluno de EMAIL "joao@cin" e SENHA "123" loga no sistema 
+    And atualiza as notificações
+    And aluno de CPF "678" clica na notificação do convite para a turma de NOME "MD" e CÓDIGO "555" pelo professor de NOME "marcio"
+    And clica em aceitar o convite para a turma de NOME "MD" e CÓDIGO "555"
+    And atualiza as notificações
+    Then notificação de convite para a turma de NOME "MD" e CÓDIGO "555" para o aluno de NOME "joao" e CPF "678" é removida
 
 
 Scenario: limpar notificações de aluno.
-    Given: o aluno "lucas" está logado
-    And: ha alguma notificação para "lucas"
-    When: "lucas" limpa as notificações
-    Then: o notificador referente ao cpf de lucas ficará vazio no sistema
+    Given o aluno "lucas" está logado
+    And ha alguma notificação para "lucas"
+    When "lucas" limpa as notificações
+    Then o notificador referente ao cpf de lucas ficará vazio no sistema
 
 Scenario: limpar notificações de professor.
-    Given: o professor "lucas" está logado
-    And: ha alguma notificação para "lucas"
-    When: "lucas" limpa as notificações
-    Then: o notificador referente ao cpf de lucas ficará vazio no sistema
+    Given o professor "lucas" está logado
+    And ha alguma notificação para "lucas"
+    When "lucas" limpa as notificações
+    Then o notificador referente ao cpf de lucas ficará vazio no sistema
 
 
 Scenario: notificador de aluno recém cadastrado é criado.
-    Given: que o aluno esteja na página de cadastro do sistema
-    And: não exista na memória do sistema um usuário cadastrado com um CPF "111.222.333-44"
-    When: o aluno preenche o CPF "111.222.333-44", o NOME "lucas", o E-MAIL "lucas@ufpe.br" e a SENHA "1234"
-    Then: o CPF "111.222.333-44" possuí um notificador válido no sistema
+    Given que o aluno esteja na página de cadastro do sistema
+    And não exista na memória do sistema um usuário cadastrado com um CPF "111.222.333-44"
+    When o aluno preenche o CPF "111.222.333-44", o NOME "lucas", o E-MAIL "lucas@ufpe.br" e a SENHA "1234"
+    Then o CPF "111.222.333-44" possuí um notificador válido no sistema
 
 Scenario: notificador de professor recém cadastrado é criado.
-    Given: que o professor esteja na página de cadastro do sistema
-    And: não exista na memória do sistema um usuário cadastrado com um CPF "111.222.333-44"
-    When: o professor preenche o CPF "111.222.333-44", o NOME "lucas", o E-MAIL "lucas@ufpe.br" e a SENHA "1234"
-    Then: o CPF "111.222.333-44" possuí um notificador válido no sistema
+    Given que o professor esteja na página de cadastro do sistema
+    And não exista na memória do sistema um usuário cadastrado com um CPF "111.222.333-44"
+    When o professor preenche o CPF "111.222.333-44", o NOME "lucas", o E-MAIL "lucas@ufpe.br" e a SENHA "1234"
+    Then o CPF "111.222.333-44" possuí um notificador válido no sistema
 
